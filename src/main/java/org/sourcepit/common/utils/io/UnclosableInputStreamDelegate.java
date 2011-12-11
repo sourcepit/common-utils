@@ -4,7 +4,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.path;
+package org.sourcepit.common.utils.io;
 
 import java.io.IOException;
 import java.io.InputStream;
