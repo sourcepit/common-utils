@@ -26,7 +26,7 @@ public class ZipEntryUnpacker implements ZipEntryHandler
       this.dstDir = dstDir;
    }
 
-   public void handle(ZipInputStream zipIn, ZipEntry zipEntry, int zipEntryIdx) throws IOException
+   public void handle(ZipInputStream zipIn, ZipEntry zipEntry) throws IOException
    {
       final File newFile = newFile(zipEntry);
       if (!newFile.isDirectory())

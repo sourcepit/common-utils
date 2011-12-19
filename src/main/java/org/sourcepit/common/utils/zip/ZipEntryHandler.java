@@ -12,5 +12,5 @@ import java.util.zip.ZipInputStream;
 
 public interface ZipEntryHandler
 {
-   void handle(ZipInputStream zipIn, ZipEntry zipEntry, int zipEntryIdx) throws IOException;
+   void handle(ZipInputStream zipIn, ZipEntry zipEntry) throws IOException;
 }

@@ -47,7 +47,7 @@ public class SingleZipPartitionProcessor implements Callable<Integer>
       {
          if (isUnzip(zipEntry, zipEntryIdx))
          {
-            processZipEntry(zipIn, zipEntry, zipEntryIdx);
+            processZipEntry(zipIn, zipEntry);
             processed++;
          }
          zipEntry = zipIn.getNextEntry();
@@ -56,9 +56,9 @@ public class SingleZipPartitionProcessor implements Callable<Integer>
       return processed;
    }
 
-   protected void processZipEntry(ZipInputStream zipIn, ZipEntry zipEntry, int zipEntryIdx) throws IOException
+   protected void processZipEntry(ZipInputStream zipIn, ZipEntry zipEntry) throws IOException
    {
-      entryHandler.handle(zipIn, zipEntry, zipEntryIdx);
+      entryHandler.handle(zipIn, zipEntry);
    }
 
    protected boolean isUnzip(ZipEntry zipEntry, int zipEntryIdx)
