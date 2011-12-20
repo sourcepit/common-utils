@@ -138,7 +138,7 @@ public final class PathUtils
       return normalizedBasePath.split(Pattern.quote(pathSeparator));
    }
 
-   private static String normalize(String targetPath, String pathSeparator)
+   public static String normalize(String targetPath, String pathSeparator)
    {
       // Normalize the paths
       String normalizedTargetPath = FilenameUtils.normalizeNoEndSeparator(targetPath);

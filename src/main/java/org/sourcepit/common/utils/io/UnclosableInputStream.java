@@ -11,11 +11,23 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 
-public abstract class UnclosableInputStreamDelegate extends InputStream
+public abstract class UnclosableInputStream extends InputStream
 {
    private InputStream delegate;
 
    private boolean closed;
+
+   public static UnclosableInputStream wrap(final InputStream inputStream)
+   {
+      return new UnclosableInputStream()
+      {
+         @Override
+         protected InputStream openInputStream() throws IOException
+         {
+            return inputStream;
+         }
+      };
+   }
 
    @Override
    public int read() throws IOException
