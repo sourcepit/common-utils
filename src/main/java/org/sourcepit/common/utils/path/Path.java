@@ -16,6 +16,8 @@ import java.util.List;
  */
 public final class Path
 {
+   public static final String SEPARATOR = "/";
+
    private final String path;
 
    private String normalizedPath;
@@ -43,7 +45,7 @@ public final class Path
    {
       if (normalizedPath == null)
       {
-         normalizedPath = PathUtils.normalize(path, "/");
+         normalizedPath = PathUtils.normalize(path, SEPARATOR);
       }
       return normalizedPath;
    }
@@ -57,16 +59,32 @@ public final class Path
       return osPath;
    }
 
+   private Path parent;
+
+   public Path getParent()
+   {
+      if (parent == null)
+      {
+         final String normalizedPath = getNormalizedPath();
+         int idx = normalizedPath.lastIndexOf(SEPARATOR);
+         if (idx > 0)
+         {
+            parent = new Path(normalizedPath.substring(0, idx));
+         }
+      }
+      return parent;
+   }
+
    public List<String> getSegments()
    {
       if (segments == null)
       {
          String normalized = getNormalizedPath();
-         if (normalized.startsWith("/"))
+         if (normalized.startsWith(SEPARATOR))
          {
             normalized = normalized.substring(1);
          }
-         segments = Collections.unmodifiableList(Arrays.asList(normalized.split("/")));
+         segments = Collections.unmodifiableList(Arrays.asList(normalized.split(SEPARATOR)));
       }
       return segments;
    }

@@ -52,16 +52,16 @@ public class PathTest
 
       path = new Path("/foo/bar/");
       assertThat(path.toString(), IsEqual.equalTo("/foo/bar"));
-      
+
       path = new Path("/foo//bar/");
       assertThat(path.toString(), IsEqual.equalTo("/foo/bar"));
-      
+
       path = new Path("\\foo\\bar");
       assertThat(path.toString(), IsEqual.equalTo("/foo/bar"));
 
       path = new Path("\\foo\\bar\\");
       assertThat(path.toString(), IsEqual.equalTo("/foo/bar"));
-      
+
       path = new Path("\\foo\\\\bar\\");
       assertThat(path.toString(), IsEqual.equalTo("/foo/bar"));
    }
@@ -93,14 +93,14 @@ public class PathTest
       assertThat(segments.size(), Is.is(2));
       assertThat(segments.get(0), IsEqual.equalTo("foo"));
       assertThat(segments.get(1), IsEqual.equalTo("bar"));
-      
+
       path = new Path("/foo//bar/");
       segments = path.getSegments();
       assertThat(segments.size(), Is.is(2));
       assertThat(segments.get(0), IsEqual.equalTo("foo"));
       assertThat(segments.get(1), IsEqual.equalTo("bar"));
    }
-   
+
    @Test
    public void testGetFileNameAndExtension()
    {
@@ -109,30 +109,51 @@ public class PathTest
       path = new Path("");
       assertThat(path.getFileName(), IsNull.nullValue());
       assertThat(path.getFileExtension(), IsNull.nullValue());
-      
+
       path = new Path(".");
       assertThat(path.getFileName(), IsNull.nullValue());
       assertThat(path.getFileExtension(), IsNull.nullValue());
-      
+
       path = new Path("foo");
       assertThat(path.getFileName(), IsNull.nullValue());
       assertThat(path.getFileExtension(), IsNull.nullValue());
-      
+
       path = new Path(".txt");
       assertThat(path.getFileName(), IsNull.nullValue());
       assertThat(path.getFileExtension(), IsEqual.equalTo("txt"));
-      
+
       path = new Path("foo.txt");
       assertThat(path.getFileName(), IsEqual.equalTo("foo"));
       assertThat(path.getFileExtension(), IsEqual.equalTo("txt"));
-      
+
       path = new Path("foo.bar.txt");
       assertThat(path.getFileName(), IsEqual.equalTo("foo.bar"));
       assertThat(path.getFileExtension(), IsEqual.equalTo("txt"));
-      
+
       path = new Path("foo/foo.bar.txt");
       assertThat(path.getFileName(), IsEqual.equalTo("foo.bar"));
       assertThat(path.getFileExtension(), IsEqual.equalTo("txt"));
+   }
+
+   @Test
+   public void testGetParent()
+   {
+      Path path;
+
+      path = new Path("");
+      assertThat(path.getParent(), IsNull.nullValue());
+
+      path = new Path("foo");
+      assertThat(path.getParent(), IsNull.nullValue());
+      
+      path = new Path("/foo");
+      assertThat(path.getParent(), IsNull.nullValue());
+
+      path = new Path("/foo//bar");
+      assertThat(path.getParent().getFirstSegment(), IsEqual.equalTo("foo"));
+      
+      path = new Path("foo/bar");
+      assertThat(path.getParent().getLastSegment(), IsEqual.equalTo("foo"));
    }
 
 }
