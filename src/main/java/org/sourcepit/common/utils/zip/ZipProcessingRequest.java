@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 /**
  * @author Bernd
  */
-public class UnzipRequest
+public class ZipProcessingRequest
 {
    private ZipInputStreamFactory streamFactory;
 
@@ -25,9 +25,9 @@ public class UnzipRequest
 
    private int nrOfThreads;
 
-   public static UnzipRequest newUnzipRequest(File zipFile, File dstDir)
+   public static ZipProcessingRequest newUnzipRequest(File zipFile, File dstDir)
    {
-      final UnzipRequest request = new UnzipRequest();
+      final ZipProcessingRequest request = new ZipProcessingRequest();
       request.setStreamFactory(new FileZipInputStreamFactory(zipFile));
       request.setEntryHandler(new ZipEntryUnpacker(dstDir));
       return request;

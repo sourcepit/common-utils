@@ -10,9 +10,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -26,7 +26,7 @@ public class ZipEntryUnpacker implements ZipEntryHandler
       this.dstDir = dstDir;
    }
 
-   public void handle(ZipInputStream zipIn, ZipEntry zipEntry) throws IOException
+   public void handle(ZipEntry zipEntry, InputStream content) throws IOException
    {
       final File newFile = newFile(zipEntry);
       if (!newFile.isDirectory())
@@ -34,7 +34,7 @@ public class ZipEntryUnpacker implements ZipEntryHandler
          final OutputStream out = new BufferedOutputStream(new FileOutputStream(newFile));
          try
          {
-            IOUtils.copy(zipIn, out);
+            IOUtils.copy(content, out);
          }
          finally
          {

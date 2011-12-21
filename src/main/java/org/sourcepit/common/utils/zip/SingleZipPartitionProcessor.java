@@ -58,7 +58,7 @@ public class SingleZipPartitionProcessor implements Callable<Integer>
 
    protected void processZipEntry(ZipInputStream zipIn, ZipEntry zipEntry) throws IOException
    {
-      entryHandler.handle(zipIn, zipEntry);
+      entryHandler.handle(zipEntry, zipIn);
    }
 
    protected boolean isUnzip(ZipEntry zipEntry, int zipEntryIdx)

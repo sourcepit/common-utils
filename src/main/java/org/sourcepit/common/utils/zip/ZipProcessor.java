@@ -19,9 +19,9 @@ import java.util.concurrent.Future;
 /**
  * @author Bernd
  */
-public class UnzipProcessor
+public class ZipProcessor
 {
-   public int process(UnzipRequest request) throws IOException
+   public int process(ZipProcessingRequest request) throws IOException
    {
       final ZipPartitioner zipPartitioner = request.getZipPartitioner();
 

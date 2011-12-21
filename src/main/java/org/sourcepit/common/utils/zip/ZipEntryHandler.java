@@ -7,10 +7,10 @@
 package org.sourcepit.common.utils.zip;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public interface ZipEntryHandler
 {
-   void handle(ZipInputStream zipIn, ZipEntry zipEntry) throws IOException;
+   void handle(ZipEntry zipEntry, InputStream content) throws IOException;
 }
