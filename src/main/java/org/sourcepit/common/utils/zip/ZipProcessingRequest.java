@@ -85,7 +85,7 @@ public class ZipProcessingRequest
    {
       if (nrOfThreads < 1)
       {
-         nrOfThreads = Runtime.getRuntime().availableProcessors();
+         nrOfThreads = (int) Math.ceil(Runtime.getRuntime().availableProcessors() * 1.25f);
       }
       return nrOfThreads;
    }

@@ -11,5 +11,10 @@ import java.util.zip.ZipInputStream;
 
 public interface ZipInputStreamFactory
 {
+   /**
+    * @return number of bytes returned by the zip input stream, or -1 if unknown
+    */
+   int getNumberOfBytes() throws IOException;
+
    ZipInputStream newZipInputStream() throws IOException;
 }

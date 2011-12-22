@@ -34,6 +34,18 @@ public class ZipProcessor
       final Collection<Callable<Integer>> partitionProcessors = zipPartitioner.computePartitions(streamFactory,
          entryHandler, nrOfThreads);
 
+      if (partitionProcessors.size() == 1)
+      {
+         try
+         {
+            return partitionProcessors.iterator().next().call().intValue();
+         }
+         catch (Exception e)
+         {
+            throw new IllegalStateException(e);
+         }
+      }
+
       final ExecutorService executor = request.getExecutorService();
 
       final List<Future<Integer>> futures;

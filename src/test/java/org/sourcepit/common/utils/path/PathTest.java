@@ -6,7 +6,8 @@
 
 package org.sourcepit.common.utils.path;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
