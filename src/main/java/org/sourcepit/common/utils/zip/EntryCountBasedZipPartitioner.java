@@ -122,24 +122,4 @@ public class EntryCountBasedZipPartitioner implements ZipPartitioner
          IOUtils.closeQuietly(zipStream);
       }
    }
-
-   private List<String> getEntryNames(ZipInputStreamFactory streamFactory) throws IOException
-   {
-      final List<String> entryNames = new ArrayList<String>();
-      ZipInputStream zipStream = streamFactory.newZipInputStream();
-      try
-      {
-         ZipEntry zipEntry = zipStream.getNextEntry();
-         while (zipEntry != null)
-         {
-            entryNames.add(zipEntry.getName());
-            zipEntry = zipStream.getNextEntry();
-         }
-         return entryNames;
-      }
-      finally
-      {
-         IOUtils.closeQuietly(zipStream);
-      }
-   }
 }
