@@ -11,7 +11,7 @@
 	<version>0.1.0-SNAPSHOT</version>
 
 	<scm>
-		<connection>scm:svn:http://svn.sourcepit.org/common/trunk/common-utils</connection>
+		<connection>scm:git:git@github.com:sourcepit/common-utils.git</connection>
 	</scm>
 
 	<!-- repo to resolve parent pom from -->
