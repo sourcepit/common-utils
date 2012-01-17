@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsEqual;
+import org.hamcrest.core.IsNot;
 import org.hamcrest.core.IsNull;
 import org.junit.Test;
 
@@ -146,15 +147,32 @@ public class PathTest
 
       path = new Path("foo");
       assertThat(path.getParent(), IsNull.nullValue());
-      
+
       path = new Path("/foo");
       assertThat(path.getParent(), IsNull.nullValue());
 
       path = new Path("/foo//bar");
       assertThat(path.getParent().getFirstSegment(), IsEqual.equalTo("foo"));
-      
+
       path = new Path("foo/bar");
       assertThat(path.getParent().getLastSegment(), IsEqual.equalTo("foo"));
    }
 
+   @Test
+   public void testEquals()
+   {
+      assertThat(new Path(""), IsEqual.equalTo(new Path("")));
+      assertThat(new Path("foo"), IsEqual.equalTo(new Path("foo")));
+      assertThat(new Path("/foo"), IsEqual.equalTo(new Path("/foo")));
+      assertThat(new Path("\\foo"), IsEqual.equalTo(new Path("/foo")));
+      assertThat(new Path("foo/"), IsEqual.equalTo(new Path("foo/")));
+      assertThat(new Path("foo/bar"), IsEqual.equalTo(new Path("foo/bar")));
+      assertThat(new Path("foo/bar/"), IsEqual.equalTo(new Path("foo/bar")));
+      assertThat(new Path("foo\\bar"), IsEqual.equalTo(new Path("foo/bar")));
+      assertThat(new Path("foo\\bar"), IsEqual.equalTo(new Path("foo/bar")));
+      
+      assertThat(new Path("/foo"), IsNot.not(IsEqual.equalTo(new Path("foo"))));
+      assertThat(new Path("\\foo"), IsNot.not(IsEqual.equalTo(new Path("foo"))));
+      assertThat(new Path("foo"), IsNot.not(IsEqual.equalTo(new Path("bar"))));
+   }
 }
