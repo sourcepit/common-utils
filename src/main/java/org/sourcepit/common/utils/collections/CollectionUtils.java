@@ -24,7 +24,7 @@ public final class CollectionUtils
       {
          throw new IllegalArgumentException("Arguments must not be null.");
       }
-      
+
       for (E element : collection)
       {
          final V value = lookup.lookup(element);
@@ -34,5 +34,21 @@ public final class CollectionUtils
          }
       }
       return null;
+   }
+
+   @SuppressWarnings("unchecked")
+   public static <T> void addAll(Collection<T> dest, Collection<? super T> src, Class<? extends T> type)
+   {
+      if (dest == null || src == null || type == null)
+      {
+         throw new IllegalArgumentException("Arguments must not be null.");
+      }
+      for (Object element : src)
+      {
+         if (element != null && type.isAssignableFrom(element.getClass()))
+         {
+            dest.add((T) element);
+         }
+      }
    }
 }
