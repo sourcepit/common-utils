@@ -9,7 +9,6 @@ package org.sourcepit.common.utils.zip;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -26,22 +25,9 @@ public class EntryCountBasedZipPartitioner implements ZipPartitioner
 
       final int numberOfPartitions = computeNumberOfPartitions(numberOfThreads, numberOfBytes, numberOfEntries);
 
-      System.out.println("files: " + numberOfEntries);
-      System.out.println("bytes: " + numberOfBytes);
-      System.out.println("threads: " + numberOfThreads);
-
       int jobsSize = numberOfEntries / numberOfPartitions;
       int leftover = numberOfPartitions % numberOfPartitions;
-
-      System.out.println("partitions: " + numberOfPartitions);
-      System.out.println("files per partitions: " + jobsSize);
-
-      // if (numberOfPartitions == 2)
-      // {
-      // return (Collection) Collections.singleton(new RangedZipPartitionProcessor(streamFactory, entryHandler, 0,
-      // numberOfEntries - 1));
-      // }
-
+      
       final Collection<Callable<Integer>> tasks = new ArrayList<Callable<Integer>>();
       if (jobsSize > 0)
       {
