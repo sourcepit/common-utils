@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 
 public class LinkedPropertiesMap extends LinkedHashMap<String, String> implements PropertiesMap
