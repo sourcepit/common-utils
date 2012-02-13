@@ -188,7 +188,19 @@ public class DelegatingPropertiesMap implements PropertiesMap
    {
       return delegate.entrySet();
    }
-   
+
+   @Override
+   public boolean equals(Object obj)
+   {
+      return delegate.equals(obj);
+   }
+
+   @Override
+   public int hashCode()
+   {
+      return delegate.hashCode();
+   }
+
    @Override
    public String toString()
    {
