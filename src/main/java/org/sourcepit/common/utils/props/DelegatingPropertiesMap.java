@@ -188,4 +188,10 @@ public class DelegatingPropertiesMap implements PropertiesMap
    {
       return delegate.entrySet();
    }
+   
+   @Override
+   public String toString()
+   {
+      return delegate.toString();
+   }
 }
