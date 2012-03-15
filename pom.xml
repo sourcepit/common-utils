@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.sourcepit.common</groupId>
 		<artifactId>common-parent</artifactId>
-		<version>2-SNAPSHOT</version>
+		<version>2</version>
 		<relativePath>../common-parent</relativePath>
 	</parent>
 	<artifactId>common-utils</artifactId>
