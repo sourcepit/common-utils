@@ -9,7 +9,9 @@ package org.sourcepit.common.utils.ex;
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public interface ErrorCarrier<E extends Error> extends ThrowableCarrier<E>
+public interface ErrorCarrier extends ThrowableCarrier
 {
-   public Error toThrowable();
+   Error getCause();
+   
+   Error toThrowable();
 }

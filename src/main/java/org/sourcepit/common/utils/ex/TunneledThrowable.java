@@ -15,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class TunneledThrowable extends Throwable implements ThrowableCarrier<Throwable>
+public class TunneledThrowable extends Throwable implements ThrowableCarrier
 {
    private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class TunneledThrowable extends Throwable implements ThrowableCarrier<Thr
       return TunneledError.toTunneledError(error);
    }
 
-   public static ThrowableCarrier<?> toThrowableCarrier(Throwable throwable)
+   public static ThrowableCarrier toThrowableCarrier(Throwable throwable)
    {
       if (throwable instanceof Error)
       {
@@ -66,7 +66,7 @@ public class TunneledThrowable extends Throwable implements ThrowableCarrier<Thr
       return doGetMessage();
    }
 
-   public <E extends Throwable> E adapt(Class<E> type)
+   public <A> A adapt(Class<A> type)
    {
       return doAdapt(this, type);
    }
@@ -110,14 +110,14 @@ public class TunneledThrowable extends Throwable implements ThrowableCarrier<Thr
    }
 
    @SuppressWarnings("unchecked")
-   static <E> E doAdapt(ThrowableCarrier<? extends Throwable> carrier, Class<E> type)
+   static <A> A doAdapt(ThrowableCarrier carrier, Class<A> type)
    {
       argNotNull(carrier, 0);
       argNotNull(type, 1);
       final Throwable cause = carrier.getCause();
       if (type.isAssignableFrom(cause.getClass()))
       {
-         return (E) cause;
+         return (A) cause;
       }
       return null;
    }
@@ -136,8 +136,7 @@ public class TunneledThrowable extends Throwable implements ThrowableCarrier<Thr
       argNotNull(follower, 1);
       if (follower instanceof ThrowableCarrier)
       {
-         @SuppressWarnings({ "rawtypes", "unchecked" })
-         final ThrowableCarrier<? extends Throwable> other = ((ThrowableCarrier) follower);
+         final ThrowableCarrier other = ((ThrowableCarrier) follower);
          followers.add(other.getCause());
          for (Throwable throwable : other.getFollowers())
          {
@@ -150,7 +149,7 @@ public class TunneledThrowable extends Throwable implements ThrowableCarrier<Thr
       }
    }
 
-   static void doPrintStackTrace(ThrowableCarrier<? extends Throwable> throwable, final PrintWriter printWriter)
+   static void doPrintStackTrace(ThrowableCarrier throwable, final PrintWriter printWriter)
    {
       argNotNull(throwable, 0);
       argNotNull(printWriter, 1);
@@ -164,7 +163,7 @@ public class TunneledThrowable extends Throwable implements ThrowableCarrier<Thr
       doPrintStackTrace(throwable, print);
    }
 
-   static void doPrintStackTrace(ThrowableCarrier<? extends Throwable> throwable, final PrintStream printStream)
+   static void doPrintStackTrace(ThrowableCarrier throwable, final PrintStream printStream)
    {
       argNotNull(throwable, 0);
       argNotNull(printStream, 1);
@@ -178,7 +177,7 @@ public class TunneledThrowable extends Throwable implements ThrowableCarrier<Thr
       doPrintStackTrace(throwable, print);
    }
 
-   private static void doPrintStackTrace(ThrowableCarrier<? extends Throwable> throwable, final Print print)
+   private static void doPrintStackTrace(ThrowableCarrier throwable, final Print print)
    {
       print.ln(throwable);
 

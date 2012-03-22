@@ -78,7 +78,7 @@ public class TunneledThrowableTest
       assertNullArgs(TunneledException.toTunneledException(new Exception()));
    }
 
-   private void assertNullArgs(ThrowableCarrier<?> tunneledError)
+   private void assertNullArgs(ThrowableCarrier tunneledError)
    {
       try
       {

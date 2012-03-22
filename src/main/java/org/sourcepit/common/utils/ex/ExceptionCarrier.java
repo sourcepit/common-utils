@@ -9,7 +9,9 @@ package org.sourcepit.common.utils.ex;
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public interface ExceptionCarrier<E extends Exception> extends ThrowableCarrier<E>
+public interface ExceptionCarrier extends ThrowableCarrier
 {
-   public RuntimeException toThrowable();
+   Exception getCause();
+   
+   RuntimeException toThrowable();
 }

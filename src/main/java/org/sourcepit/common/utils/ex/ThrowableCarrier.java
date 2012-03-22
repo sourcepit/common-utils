@@ -13,18 +13,18 @@ import java.util.List;
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public interface ThrowableCarrier<T extends Throwable>
+public interface ThrowableCarrier
 {
-   <E extends T> E adapt(Class<E> type);
+   <A> A adapt(Class<A> type);
 
-   T getCause();
-   
+   Throwable getCause();
+
    Throwable toThrowable();
 
    StackTraceElement[] getStackTrace();
 
    List<Throwable> getFollowers();
-   
+
    void append(Throwable follower);
 
    void printStackTrace(final PrintWriter printWriter);

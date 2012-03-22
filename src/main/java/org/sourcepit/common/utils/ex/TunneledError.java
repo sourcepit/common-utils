@@ -15,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public final class TunneledError extends Error implements ErrorCarrier<Error>
+public final class TunneledError extends Error implements ErrorCarrier
 {
    private static final long serialVersionUID = 1L;
 
@@ -53,7 +53,7 @@ public final class TunneledError extends Error implements ErrorCarrier<Error>
       return TunneledThrowable.doGetMessage();
    }
 
-   public <E extends Error> E adapt(Class<E> type)
+   public <A> A adapt(Class<A> type)
    {
       return TunneledThrowable.doAdapt(this, type);
    }

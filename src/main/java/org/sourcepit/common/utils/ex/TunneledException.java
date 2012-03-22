@@ -15,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class TunneledException extends RuntimeException implements ExceptionCarrier<Exception>
+public class TunneledException extends RuntimeException implements ExceptionCarrier
 {
    private static final long serialVersionUID = 1L;
 
@@ -49,7 +49,7 @@ public class TunneledException extends RuntimeException implements ExceptionCarr
       return TunneledThrowable.doGetMessage();
    }
 
-   public <E extends Exception> E adapt(Class<E> type)
+   public <A> A adapt(Class<A> type)
    {
       return TunneledThrowable.doAdapt(this, type);
    }
