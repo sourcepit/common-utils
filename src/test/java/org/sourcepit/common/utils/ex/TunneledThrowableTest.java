@@ -27,7 +27,7 @@ public class TunneledThrowableTest
    {
       try
       {
-         TunneledThrowable.toThrowableCarrier(null);
+         Exceptions.toThrowableCarrier(null);
          fail();
       }
       catch (IllegalArgumentException e)
@@ -36,7 +36,7 @@ public class TunneledThrowableTest
 
       try
       {
-         TunneledThrowable.toTunneledError(null);
+         Exceptions.toTunneledError(null);
          fail();
       }
       catch (IllegalArgumentException e)
@@ -45,25 +45,7 @@ public class TunneledThrowableTest
 
       try
       {
-         TunneledError.toTunneledError(null);
-         fail();
-      }
-      catch (IllegalArgumentException e)
-      {
-      }
-
-      try
-      {
-         TunneledThrowable.toTunneledException(null);
-         fail();
-      }
-      catch (IllegalArgumentException e)
-      {
-      }
-
-      try
-      {
-         TunneledException.toTunneledException(null);
+         Exceptions.toTunneledException(null);
          fail();
       }
       catch (IllegalArgumentException e)
@@ -71,11 +53,9 @@ public class TunneledThrowableTest
       }
 
 
-      assertNullArgs(TunneledThrowable.toTunneledError(new Error()));
-      assertNullArgs(TunneledError.toTunneledError(new Error()));
+      assertNullArgs(Exceptions.toTunneledError(new Error()));
 
-      assertNullArgs(TunneledThrowable.toTunneledException(new Exception()));
-      assertNullArgs(TunneledException.toTunneledException(new Exception()));
+      assertNullArgs(Exceptions.toTunneledException(new Exception()));
    }
 
    private void assertNullArgs(ThrowableCarrier tunneledError)
@@ -119,23 +99,12 @@ public class TunneledThrowableTest
    {
       Exception cause = new Exception();
 
-      TunneledException tex = TunneledThrowable.toTunneledException(cause);
+      TunneledException tex = Exceptions.toTunneledException(cause);
       assertNotNull(tex);
       assertSame(cause, tex.getCause());
       assertTrue(tex.getFollowers().isEmpty());
 
-      TunneledException tex2 = TunneledThrowable.toTunneledException(tex);
-      assertNotNull(tex);
-      assertSame(tex, tex2);
-      assertSame(cause, tex2.getCause());
-      assertTrue(tex.getFollowers().isEmpty());
-
-      tex = TunneledException.toTunneledException(cause);
-      assertNotNull(tex);
-      assertSame(cause, tex.getCause());
-      assertTrue(tex.getFollowers().isEmpty());
-
-      tex2 = TunneledException.toTunneledException(tex);
+      TunneledException tex2 = Exceptions.toTunneledException(tex);
       assertNotNull(tex);
       assertSame(tex, tex2);
       assertSame(cause, tex2.getCause());
@@ -147,23 +116,12 @@ public class TunneledThrowableTest
    {
       Error cause = new Error();
 
-      TunneledError tex = TunneledThrowable.toTunneledError(cause);
+      TunneledError tex = Exceptions.toTunneledError(cause);
       assertNotNull(tex);
       assertSame(cause, tex.getCause());
       assertTrue(tex.getFollowers().isEmpty());
 
-      TunneledError tex2 = TunneledThrowable.toTunneledError(tex);
-      assertNotNull(tex);
-      assertSame(tex, tex2);
-      assertSame(cause, tex2.getCause());
-      assertTrue(tex.getFollowers().isEmpty());
-
-      tex = TunneledError.toTunneledError(cause);
-      assertNotNull(tex);
-      assertSame(cause, tex.getCause());
-      assertTrue(tex.getFollowers().isEmpty());
-
-      tex2 = TunneledError.toTunneledError(tex);
+      TunneledError tex2 = Exceptions.toTunneledError(tex);
       assertNotNull(tex);
       assertSame(tex, tex2);
       assertSame(cause, tex2.getCause());

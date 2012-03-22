@@ -20,6 +20,8 @@ public interface ThrowableCarrier
    Throwable getCause();
 
    Throwable toThrowable();
+   
+   void doThow();
 
    StackTraceElement[] getStackTrace();
 

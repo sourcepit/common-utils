@@ -21,17 +21,8 @@ public final class TunneledError extends Error implements ErrorCarrier
 
    private final List<Throwable> followers = new CopyOnWriteArrayList<Throwable>();
 
-   public static TunneledError toTunneledError(Error error)
-   {
-      if (error instanceof TunneledError)
-      {
-         return (TunneledError) error;
-      }
-      TunneledThrowable.argNotNull(error, 0);
-      return new TunneledError(error);
-   }
 
-   private TunneledError(Error cause)
+   TunneledError(Error cause)
    {
       super(cause);
    }
@@ -47,15 +38,20 @@ public final class TunneledError extends Error implements ErrorCarrier
       return this;
    }
 
+   public void doThow()
+   {
+      throw this;
+   }
+
    @Override
    public String getMessage()
    {
-      return TunneledThrowable.doGetMessage();
+      return Exceptions.doGetMessage();
    }
 
    public <A> A adapt(Class<A> type)
    {
-      return TunneledThrowable.doAdapt(this, type);
+      return Exceptions.doAdapt(this, type);
    }
 
    public List<Throwable> getFollowers()
@@ -65,18 +61,18 @@ public final class TunneledError extends Error implements ErrorCarrier
 
    public void append(Throwable follower)
    {
-      TunneledThrowable.doAppend(followers, follower);
+      Exceptions.doAppend(followers, follower);
    }
 
    @Override
    public void printStackTrace(PrintStream printStream)
    {
-      TunneledThrowable.doPrintStackTrace(this, printStream);
+      Exceptions.doPrintStackTrace(this, printStream);
    }
 
    @Override
    public void printStackTrace(PrintWriter printWriter)
    {
-      TunneledThrowable.doPrintStackTrace(this, printWriter);
+      Exceptions.doPrintStackTrace(this, printWriter);
    }
 }

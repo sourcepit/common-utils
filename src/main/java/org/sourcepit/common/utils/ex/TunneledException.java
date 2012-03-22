@@ -21,18 +21,7 @@ public class TunneledException extends RuntimeException implements ExceptionCarr
 
    private final List<Throwable> followers = new CopyOnWriteArrayList<Throwable>();
 
-   public static TunneledException toTunneledException(Exception exception)
-   {
-      if (exception instanceof TunneledException)
-      {
-         return (TunneledException) exception;
-      }
-
-      TunneledThrowable.argNotNull(exception, 0);
-      return new TunneledException(exception);
-   }
-
-   private TunneledException(Exception cause)
+   TunneledException(Exception cause)
    {
       super(cause);
    }
@@ -43,15 +32,20 @@ public class TunneledException extends RuntimeException implements ExceptionCarr
       return (Exception) super.getCause();
    }
 
+   public void doThow()
+   {
+      throw this;
+   }
+
    @Override
    public String getMessage()
    {
-      return TunneledThrowable.doGetMessage();
+      return Exceptions.doGetMessage();
    }
 
    public <A> A adapt(Class<A> type)
    {
-      return TunneledThrowable.doAdapt(this, type);
+      return Exceptions.doAdapt(this, type);
    }
 
    public List<Throwable> getFollowers()
@@ -61,7 +55,7 @@ public class TunneledException extends RuntimeException implements ExceptionCarr
 
    public void append(Throwable follower)
    {
-      TunneledThrowable.doAppend(followers, follower);
+      Exceptions.doAppend(followers, follower);
    }
 
    public TunneledException toThrowable()
@@ -72,12 +66,12 @@ public class TunneledException extends RuntimeException implements ExceptionCarr
    @Override
    public void printStackTrace(PrintStream printStream)
    {
-      TunneledThrowable.doPrintStackTrace(this, printStream);
+      Exceptions.doPrintStackTrace(this, printStream);
    }
 
    @Override
    public void printStackTrace(PrintWriter printWriter)
    {
-      TunneledThrowable.doPrintStackTrace(this, printWriter);
+      Exceptions.doPrintStackTrace(this, printWriter);
    }
 }
