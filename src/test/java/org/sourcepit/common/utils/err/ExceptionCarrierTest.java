@@ -6,9 +6,10 @@
 
 package org.sourcepit.common.utils.err;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+import org.sourcepit.common.utils.ex.TunneledException;
+import org.sourcepit.common.utils.ex.TunneledRuntimeException;
+import org.sourcepit.common.utils.ex.TunneledThrowable;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
@@ -16,55 +17,55 @@ import org.junit.Test;
 public class ExceptionCarrierTest
 {
 
-   @Test
-   public void testJava7()
-   {
-      Class c = null;
-
-      Throwable root = null;
-
-      try
-      {
-         c.toString();
-      }
-      catch (Throwable e)
-      {
-         root = new IllegalStateException("foo",e);
-      }
-
-      nestedMEthod(c, root);
-
-      try
-      {
-         c.toString();
-      }
-      catch (Throwable e)
-      {
-         root.addSuppressed(new IllegalStateException(e));
-      }
-      
-      root.printStackTrace();
-
-   }
-
-   private void nestedMEthod(Class c, Throwable root)
-   {
-      try
-      {
-         c.toString();
-      }
-      catch (Throwable e)
-      {
-         root.addSuppressed(e);
-      }
-   }
-   
+   // @Test
+   // public void testJava7()
+   // {
+   // Class c = null;
+   //
+   // Throwable root = null;
+   //
+   // try
+   // {
+   // c.toString();
+   // }
+   // catch (Throwable e)
+   // {
+   // root = new IllegalStateException("foo",e);
+   // }
+   //
+   // nestedMEthod(c, root);
+   //
+   // try
+   // {
+   // c.toString();
+   // }
+   // catch (Throwable e)
+   // {
+   // root.addSuppressed(new IllegalStateException(e));
+   // }
+   //
+   // root.printStackTrace();
+   //
+   // }
+   //
+   // private void nestedMEthod(Class c, Throwable root)
+   // {
+   // try
+   // {
+   // c.toString();
+   // }
+   // catch (Throwable e)
+   // {
+   // root.addSuppressed(e);
+   // }
+   // }
+   //
    @Test
    public void testCarrier()
    {
       Class c = null;
 
-      TunneledException root = null;
+      TunneledRuntimeException root = null;
 
       try
       {
@@ -72,7 +73,7 @@ public class ExceptionCarrierTest
       }
       catch (Exception e)
       {
-         root = new TunneledException(new IllegalStateException("foo",e));
+         root = TunneledThrowable.tunnel(new IllegalStateException("foo", e)).toThrowable();
       }
 
       nestedMEthod(c, root);
@@ -85,12 +86,12 @@ public class ExceptionCarrierTest
       {
          root.append(new IllegalStateException(e));
       }
-      
+
       root.printStackTrace();
 
    }
 
-   private void nestedMEthod(Class c, TunneledException root)
+   private void nestedMEthod(Class c, TunneledRuntimeException root)
    {
       try
       {
