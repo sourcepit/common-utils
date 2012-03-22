@@ -8,9 +8,9 @@ package org.sourcepit.common.utils.ex;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
@@ -19,42 +19,40 @@ public class TunneledThrowable extends Throwable implements ThrowableCarrier<Thr
 {
    private static final long serialVersionUID = 1L;
 
-   private List<Throwable> followers = null;
+   private final List<Throwable> followers = new CopyOnWriteArrayList<Throwable>();
 
-   public static TunneledRuntimeException tunnel(RuntimeException exception)
+   public static TunneledException toTunneledException(Exception exception)
    {
-      return new TunneledRuntimeException(exception);
+      return TunneledException.toTunneledException(exception);
    }
 
-   public static TunneledException tunnel(Exception exception)
+   public static TunneledError toTunneledError(Error error)
    {
-      return new TunneledException(exception);
+      return TunneledError.toTunneledError(error);
    }
 
-   public static TunneledError tunnel(Error error)
+   public static ThrowableCarrier<?> toThrowableCarrier(Throwable throwable)
    {
-      return new TunneledError(error);
-   }
-
-   public static TunneledThrowable tunnel(Throwable error)
-   {
-      return new TunneledThrowable(error);
-   }
-
-   TunneledThrowable(Throwable cause)
-   {
-      super(cause instanceof TunneledThrowable ? cause.getCause() : cause);
-      if (cause instanceof TunneledThrowable)
+      if (throwable instanceof Error)
       {
-         final List<Throwable> otherFollowers = ((TunneledThrowable) cause).followers;
-         if (otherFollowers != null)
-         {
-            for (Throwable follower : otherFollowers)
-            {
-               append(follower);
-            }
-         }
+         return toTunneledError((Error) throwable);
       }
+      else if (throwable instanceof Exception)
+      {
+         return toTunneledException((Exception) throwable);
+      }
+      else if (throwable instanceof TunneledThrowable)
+      {
+         return (TunneledThrowable) throwable;
+      }
+
+      argNotNull(throwable, 0);
+      return new TunneledThrowable(throwable);
+   }
+
+   private TunneledThrowable(Throwable cause)
+   {
+      super(cause);
    }
 
    public TunneledThrowable toThrowable()
@@ -77,17 +75,13 @@ public class TunneledThrowable extends Throwable implements ThrowableCarrier<Thr
    {
       synchronized (followers)
       {
-         if (followers == null)
-         {
-            followers = new ArrayList<Throwable>();
-         }
          doAppend(followers, follower);
       }
    }
 
    public List<Throwable> getFollowers()
    {
-      return followers == null ? Collections.<Throwable> emptyList() : Collections.unmodifiableList(followers);
+      return Collections.unmodifiableList(followers);
    }
 
    @Override
@@ -102,6 +96,14 @@ public class TunneledThrowable extends Throwable implements ThrowableCarrier<Thr
       doPrintStackTrace(this, printStream);
    }
 
+   static void argNotNull(Object arg, int idx)
+   {
+      if (arg == null)
+      {
+         throw new IllegalArgumentException("Argument number " + (idx + 1) + " may not be null.");
+      }
+   }
+
    static String doGetMessage()
    {
       return "I'm just the messenger... see below for actual cause.";
@@ -110,6 +112,8 @@ public class TunneledThrowable extends Throwable implements ThrowableCarrier<Thr
    @SuppressWarnings("unchecked")
    static <E> E doAdapt(ThrowableCarrier<? extends Throwable> carrier, Class<E> type)
    {
+      argNotNull(carrier, 0);
+      argNotNull(type, 1);
       final Throwable cause = carrier.getCause();
       if (type.isAssignableFrom(cause.getClass()))
       {
@@ -128,6 +132,8 @@ public class TunneledThrowable extends Throwable implements ThrowableCarrier<Thr
 
    static void doAppend(List<Throwable> followers, Throwable follower)
    {
+      argNotNull(followers, 0);
+      argNotNull(follower, 1);
       if (follower instanceof ThrowableCarrier)
       {
          @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -146,6 +152,8 @@ public class TunneledThrowable extends Throwable implements ThrowableCarrier<Thr
 
    static void doPrintStackTrace(ThrowableCarrier<? extends Throwable> throwable, final PrintWriter printWriter)
    {
+      argNotNull(throwable, 0);
+      argNotNull(printWriter, 1);
       final Print print = new Print()
       {
          public void ln(Object o)
@@ -158,6 +166,8 @@ public class TunneledThrowable extends Throwable implements ThrowableCarrier<Thr
 
    static void doPrintStackTrace(ThrowableCarrier<? extends Throwable> throwable, final PrintStream printStream)
    {
+      argNotNull(throwable, 0);
+      argNotNull(printStream, 1);
       final Print print = new Print()
       {
          public void ln(Object o)

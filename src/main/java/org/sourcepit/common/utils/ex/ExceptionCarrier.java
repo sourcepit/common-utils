@@ -5,6 +5,10 @@
  */
 
 package org.sourcepit.common.utils.ex;
+
+/**
+ * @author Bernd Vogt <bernd.vogt@sourcepit.org>
+ */
 public interface ExceptionCarrier<E extends Exception> extends ThrowableCarrier<E>
 {
    public RuntimeException toThrowable();

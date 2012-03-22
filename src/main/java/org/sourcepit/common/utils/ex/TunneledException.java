@@ -8,9 +8,9 @@ package org.sourcepit.common.utils.ex;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
@@ -19,7 +19,20 @@ public class TunneledException extends RuntimeException implements ExceptionCarr
 {
    private static final long serialVersionUID = 1L;
 
-   TunneledException(Exception cause)
+   private final List<Throwable> followers = new CopyOnWriteArrayList<Throwable>();
+
+   public static TunneledException toTunneledException(Exception exception)
+   {
+      if (exception instanceof TunneledException)
+      {
+         return (TunneledException) exception;
+      }
+
+      TunneledThrowable.argNotNull(exception, 0);
+      return new TunneledException(exception);
+   }
+
+   private TunneledException(Exception cause)
    {
       super(cause);
    }
@@ -29,8 +42,6 @@ public class TunneledException extends RuntimeException implements ExceptionCarr
    {
       return (Exception) super.getCause();
    }
-
-   private List<Throwable> followers = null;
 
    @Override
    public String getMessage()
@@ -45,21 +56,14 @@ public class TunneledException extends RuntimeException implements ExceptionCarr
 
    public List<Throwable> getFollowers()
    {
-      return followers == null ? Collections.<Throwable> emptyList() : Collections.unmodifiableList(followers);
+      return Collections.unmodifiableList(followers);
    }
 
    public void append(Throwable follower)
    {
-      synchronized (followers)
-      {
-         if (followers == null)
-         {
-            followers = new ArrayList<Throwable>();
-         }
-         TunneledThrowable.doAppend(followers, follower);
-      }
+      TunneledThrowable.doAppend(followers, follower);
    }
-   
+
    public TunneledException toThrowable()
    {
       return this;
