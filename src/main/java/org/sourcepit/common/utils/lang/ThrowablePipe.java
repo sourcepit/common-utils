@@ -8,33 +8,37 @@ package org.sourcepit.common.utils.lang;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public interface ThrowablePipe extends Iterable<Throwable>
+public interface ThrowablePipe extends Iterable<Throwable>, Serializable
 {
+   List<Throwable> getThrowables();
+   
+   boolean isEmpty();
+   
+   Throwable getCause();
+   
+   List<Throwable> getFollowers();
+   
+   void add(Throwable throwable);
+   
    <T extends Throwable> T adapt(Class<T> type);
 
    <T extends Throwable> void adaptAndThrow(Class<T> type) throws T;
-
-   Throwable getCause();
-
+   
    Throwable toThrowable();
 
    void throwPipe();
 
    StackTraceElement[] getStackTrace();
 
-   List<Throwable> getFollowers();
-
-   void add(Throwable follower);
-
    void printStackTrace();
    
    void printStackTrace(final PrintWriter printWriter);
 
    void printStackTrace(final PrintStream printStream);
-
 }

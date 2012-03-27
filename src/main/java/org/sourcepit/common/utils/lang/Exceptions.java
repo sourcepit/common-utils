@@ -8,8 +8,6 @@ package org.sourcepit.common.utils.lang;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -20,6 +18,18 @@ public final class Exceptions
    private Exceptions()
    {
       super();
+   }
+
+   static ThrowablePipe newPipe(Throwable cause)
+   {
+      final ThrowablePipe pipe = new CopyOnWriteThrowablePipe();
+      pipe.add(cause);
+      return pipe;
+   }
+   
+   public static ThrowablePipe newThrowablePipe()
+   {
+      return new CopyOnWriteThrowablePipe();
    }
 
    public static PipedException toPipedException(Exception exception)
@@ -40,19 +50,6 @@ public final class Exceptions
       }
       argNotNull(error, 0);
       return new PipedError(error);
-   }
-
-   public static ThrowablePipe pipe(ThrowablePipe pipe, Throwable throwable)
-   {
-      if (pipe == null)
-      {
-         pipe = toThrowablePipe(throwable);
-      }
-      else
-      {
-         pipe.add(throwable);
-      }
-      return pipe;
    }
 
    public static void throwPipe(ThrowablePipe carrier)
@@ -86,15 +83,6 @@ public final class Exceptions
       }
    }
 
-   static Iterator<Throwable> iterator(ThrowablePipe pipe)
-   {
-      final List<Throwable> followers = pipe.getFollowers();
-      final List<Throwable> all = new ArrayList<Throwable>(1 + followers.size());
-      all.add(pipe.getCause());
-      all.addAll(followers);
-      return all.iterator();
-   }
-
    static String doGetMessage()
    {
       return "See initial cause for actual problem:";
@@ -110,7 +98,16 @@ public final class Exceptions
       {
          return (A) cause;
       }
-      return type.isAssignableFrom(pipe.getClass()) ? (A) pipe : null;
+      if (type.isAssignableFrom(pipe.getClass()))
+      {
+         return (A) pipe;
+      }
+      final Throwable throwable = pipe.toThrowable();
+      if (throwable != null && type.isAssignableFrom(throwable.getClass()))
+      {
+         return (A) throwable;
+      }
+      return null;
    }
 
    static <T extends Throwable> void doAdaptAndThrow(ThrowablePipe pipe, Class<T> type) throws T
@@ -122,30 +119,25 @@ public final class Exceptions
       }
    }
 
-   static void doAppendAll(List<Throwable> target, List<Throwable> followers)
+   static void doAdd(List<Throwable> throwables, Throwable throwable)
    {
-      for (Throwable follower : followers)
-      {
-         doAppend(target, follower);
-      }
-   }
+      argNotNull(throwables, 0);
+      argNotNull(throwable, 1);
 
-   static void doAppend(List<Throwable> followers, Throwable follower)
-   {
-      argNotNull(followers, 0);
-      argNotNull(follower, 1);
-      if (follower instanceof ThrowablePipe)
+      if (!throwables.contains(throwable))
       {
-         final ThrowablePipe other = ((ThrowablePipe) follower);
-         followers.add(other.getCause());
-         for (Throwable throwable : other.getFollowers())
+         if (throwable instanceof ThrowablePipe)
          {
-            doAppend(followers, throwable);
+            final ThrowablePipe other = ((ThrowablePipe) throwable);
+            for (Throwable t : other)
+            {
+               doAdd(throwables, t);
+            }
          }
-      }
-      else
-      {
-         followers.add(follower);
+         else
+         {
+            throwables.add(throwable);
+         }
       }
    }
 
@@ -177,37 +169,40 @@ public final class Exceptions
       doPrintStackTrace(throwable, print);
    }
 
-   private static void doPrintStackTrace(ThrowablePipe throwable, final Print print)
+   private static void doPrintStackTrace(ThrowablePipe pipe, final Print print)
    {
-      print.ln(throwable);
+      print.ln(pipe);
 
-      final StackTraceElement[] trace = throwable.getStackTrace();
+      final StackTraceElement[] trace = pipe.getStackTrace();
 
       int min = Math.min(6, trace.length);
       for (int i = 0; i < min; i++)
       {
          print.ln("        at " + trace[i]);
       }
-      
+
       int left = trace.length - min;
       if (left > 0)
       {
          print.ln("        ... " + left + " more");
       }
 
-      final Throwable cause = throwable.getCause();
-      print.ln("Initially caused by: " + cause);
-
-      for (StackTraceElement traceElement : cause.getStackTrace())
+      final Throwable cause = pipe.getCause();
+      if (cause != null)
       {
-         print.ln("        at " + traceElement);
-      }
+         print.ln("Initially caused by: " + cause);
 
-      doPrintStackTrace(print, "    ", "Caused by: ", cause.getCause(), trace);
+         for (StackTraceElement traceElement : cause.getStackTrace())
+         {
+            print.ln("        at " + traceElement);
+         }
 
-      for (Throwable follower : throwable.getFollowers())
-      {
-         doPrintStackTrace(print, "", "Followed by: ", follower, trace);
+         doPrintStackTrace(print, "    ", "Caused by: ", cause.getCause(), trace);
+
+         for (Throwable follower : pipe.getFollowers())
+         {
+            doPrintStackTrace(print, "", "Followed by: ", follower, trace);
+         }
       }
    }
 

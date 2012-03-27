@@ -6,6 +6,7 @@
 
 package org.sourcepit.common.utils.lang;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -59,11 +60,11 @@ public class PipedThrowableTest
       assertNullArgs(Exceptions.toPipedException(new Exception()));
    }
 
-   private void assertNullArgs(ThrowablePipe tunneledError)
+   private void assertNullArgs(ThrowablePipe pipe)
    {
       try
       {
-         tunneledError.adapt(null);
+         pipe.adapt(null);
          fail();
       }
       catch (IllegalArgumentException e)
@@ -71,7 +72,7 @@ public class PipedThrowableTest
       }
       try
       {
-         tunneledError.add(null);
+         pipe.add(null);
          fail();
       }
       catch (IllegalArgumentException e)
@@ -79,7 +80,7 @@ public class PipedThrowableTest
       }
       try
       {
-         tunneledError.printStackTrace((PrintStream) null);
+         pipe.printStackTrace((PrintStream) null);
          fail();
       }
       catch (IllegalArgumentException e)
@@ -87,7 +88,7 @@ public class PipedThrowableTest
       }
       try
       {
-         tunneledError.printStackTrace((PrintWriter) null);
+         pipe.printStackTrace((PrintWriter) null);
          fail();
       }
       catch (IllegalArgumentException e)
@@ -130,11 +131,11 @@ public class PipedThrowableTest
    }
 
    @Test
-   public void testAdaptAndThrow()
+   public void testPipedExceptionAdaptAndThrow()
    {
       IllegalStateException initialCause = new IllegalStateException(new NullPointerException());
 
-      ThrowablePipe pipe = Exceptions.pipe(null, initialCause);
+      ThrowablePipe pipe = Exceptions.toThrowablePipe(initialCause);
       pipe.add(new NullPointerException());
 
       try
@@ -174,9 +175,76 @@ public class PipedThrowableTest
       }
       catch (PipedException e)
       {
-         assertSame(pipe, e);
+         assertEquals(pipe, e);
       }
-      
+
+      try
+      {
+         pipe.adaptAndThrow(NullPointerException.class);
+      }
+      catch (Exception e)
+      {
+         fail();
+      }
+
+      try
+      {
+         pipe.adaptAndThrow(SQLException.class);
+      }
+      catch (Exception e)
+      {
+         fail();
+      }
+   }
+
+   private static class MyError extends Error
+   {
+      private static final long serialVersionUID = 1L;
+
+      public MyError(Throwable cause)
+      {
+         super(cause);
+      }
+   }
+
+   @Test
+   public void testPipedErrorAdaptAndThrow()
+   {
+      MyError initialCause = new MyError(new NullPointerException());
+
+      ThrowablePipe pipe = Exceptions.toThrowablePipe(initialCause);
+      pipe.add(new NullPointerException());
+
+      try
+      {
+         pipe.adaptAndThrow(MyError.class);
+         fail();
+      }
+      catch (MyError e)
+      {
+         assertSame(initialCause, e);
+      }
+
+      try
+      {
+         pipe.adaptAndThrow(Error.class);
+         fail();
+      }
+      catch (MyError e)
+      {
+         assertSame(initialCause, e);
+      }
+
+      try
+      {
+         pipe.adaptAndThrow(PipedError.class);
+         fail();
+      }
+      catch (PipedError e)
+      {
+         assertEquals(pipe, e);
+      }
+
       try
       {
          pipe.adaptAndThrow(NullPointerException.class);

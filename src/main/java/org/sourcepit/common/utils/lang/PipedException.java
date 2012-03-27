@@ -8,29 +8,42 @@ package org.sourcepit.common.utils.lang;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class PipedException extends RuntimeException implements ExceptionPipe
+public class PipedException extends RuntimeException implements ThrowablePipe
 {
    private static final long serialVersionUID = 1L;
 
-   private final List<Throwable> followers = new CopyOnWriteArrayList<Throwable>();
+   private final ThrowablePipe pipe;
 
    PipedException(Exception cause)
    {
-      super(cause);
+      this(Exceptions.newPipe(cause));
+   }
+
+   PipedException(ThrowablePipe pipe)
+   {
+      this.pipe = pipe;
+   }
+
+   public List<Throwable> getThrowables()
+   {
+      return pipe.getThrowables();
+   }
+
+   public boolean isEmpty()
+   {
+      return pipe.isEmpty();
    }
 
    @Override
    public Exception getCause()
    {
-      return (Exception) super.getCause();
+      return (Exception) pipe.getCause();
    }
 
    public void throwPipe()
@@ -46,12 +59,12 @@ public class PipedException extends RuntimeException implements ExceptionPipe
 
    public List<Throwable> getFollowers()
    {
-      return Collections.unmodifiableList(followers);
+      return pipe.getFollowers();
    }
 
-   public void add(Throwable follower)
+   public void add(Throwable throwable)
    {
-      Exceptions.doAppend(followers, follower);
+      pipe.add(throwable);
    }
 
    public PipedException toThrowable()
@@ -61,13 +74,7 @@ public class PipedException extends RuntimeException implements ExceptionPipe
 
    public Iterator<Throwable> iterator()
    {
-      return Exceptions.iterator(this);
-   }
-
-   @Override
-   public void printStackTrace(PrintStream printStream)
-   {
-      Exceptions.doPrintStackTrace(this, printStream);
+      return pipe.iterator();
    }
 
    @Override
@@ -76,13 +83,58 @@ public class PipedException extends RuntimeException implements ExceptionPipe
       Exceptions.doPrintStackTrace(this, printWriter);
    }
 
+   @Override
+   public void printStackTrace(PrintStream printStream)
+   {
+      Exceptions.doPrintStackTrace(this, printStream);
+   }
+
    public <T extends Throwable> T adapt(Class<T> type)
    {
-      return Exceptions.doAdapt(this, type);
+      return pipe.adapt(type);
    }
 
    public <T extends Throwable> void adaptAndThrow(Class<T> type) throws T
    {
-      Exceptions.doAdaptAndThrow(this, type);
+      pipe.adaptAndThrow(type);
+   }
+
+   @Override
+   public int hashCode()
+   {
+      final int prime = 31;
+      int result = 1;
+      result = prime * result + ((pipe == null) ? 0 : pipe.hashCode());
+      return result;
+   }
+
+   @Override
+   public boolean equals(Object obj)
+   {
+      if (this == obj)
+      {
+         return true;
+      }
+      if (obj == null)
+      {
+         return false;
+      }
+      if (getClass() != obj.getClass())
+      {
+         return false;
+      }
+      PipedException other = (PipedException) obj;
+      if (pipe == null)
+      {
+         if (other.pipe != null)
+         {
+            return false;
+         }
+      }
+      else if (!pipe.equals(other.pipe))
+      {
+         return false;
+      }
+      return true;
    }
 }
