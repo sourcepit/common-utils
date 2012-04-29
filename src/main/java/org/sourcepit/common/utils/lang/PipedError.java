@@ -22,7 +22,7 @@ public final class PipedError extends Error implements ThrowablePipe
 
    PipedError(Error cause)
    {
-      this(Exceptions.newPipe(cause));
+      this(Exceptions.newThrowablePipe(cause));
    }
 
    PipedError(ThrowablePipe pipe)
@@ -34,16 +34,16 @@ public final class PipedError extends Error implements ThrowablePipe
    {
       return pipe.getThrowables();
    }
-   
+
    public boolean isEmpty()
    {
       return pipe.isEmpty();
    }
 
    @Override
-   public Error getCause()
+   public Throwable getCause()
    {
-      return (Error) pipe.getCause();
+      return pipe.getCause();
    }
 
    public void throwPipe()
@@ -67,7 +67,7 @@ public final class PipedError extends Error implements ThrowablePipe
       pipe.add(throwable);
    }
 
-   public PipedError toThrowable()
+   public PipedError toPipedThrowable()
    {
       return this;
    }

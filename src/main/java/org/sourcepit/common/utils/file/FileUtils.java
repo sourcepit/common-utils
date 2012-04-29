@@ -8,11 +8,8 @@ package org.sourcepit.common.utils.file;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import org.apache.commons.io.IOUtils;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>

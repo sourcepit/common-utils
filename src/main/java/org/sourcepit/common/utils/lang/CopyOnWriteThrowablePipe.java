@@ -25,10 +25,16 @@ public class CopyOnWriteThrowablePipe implements ThrowablePipe
 
    private final StackTraceElement[] stackTrace;
 
+   public CopyOnWriteThrowablePipe(Throwable cause)
+   {
+      this();
+      add(cause);
+   }
+
    public CopyOnWriteThrowablePipe()
    {
       final StackTraceElement[] src = new Exception().getStackTrace();
-      final StackTraceElement[] dest = new  StackTraceElement[src.length-1];
+      final StackTraceElement[] dest = new StackTraceElement[src.length - 1];
       System.arraycopy(src, 1, dest, 0, dest.length);
       stackTrace = dest;
    }
@@ -78,23 +84,14 @@ public class CopyOnWriteThrowablePipe implements ThrowablePipe
       Exceptions.doAdaptAndThrow(this, type);
    }
 
-   public Throwable toThrowable()
+   public Throwable toPipedThrowable()
    {
-      final Throwable cause = getCause();
-      if (cause instanceof Error)
-      {
-         return new PipedError(this);
-      }
-      if (cause instanceof Exception)
-      {
-         return new PipedException(this);
-      }
-      return null;
+      return Exceptions.toPipedThrowable(this);
    }
 
    public void throwPipe()
    {
-      final Throwable throwable = toThrowable();
+      final Throwable throwable = toPipedThrowable();
       if (throwable != null)
       {
          if (throwable instanceof Error)

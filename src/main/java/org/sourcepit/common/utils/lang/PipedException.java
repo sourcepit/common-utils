@@ -19,10 +19,10 @@ public class PipedException extends RuntimeException implements ThrowablePipe
    private static final long serialVersionUID = 1L;
 
    private final ThrowablePipe pipe;
-
+   
    PipedException(Exception cause)
    {
-      this(Exceptions.newPipe(cause));
+      this(Exceptions.newThrowablePipe(cause));
    }
 
    PipedException(ThrowablePipe pipe)
@@ -67,7 +67,7 @@ public class PipedException extends RuntimeException implements ThrowablePipe
       pipe.add(throwable);
    }
 
-   public PipedException toThrowable()
+   public PipedException toPipedThrowable()
    {
       return this;
    }

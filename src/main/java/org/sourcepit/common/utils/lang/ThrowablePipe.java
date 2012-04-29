@@ -30,7 +30,7 @@ public interface ThrowablePipe extends Iterable<Throwable>, Serializable
 
    <T extends Throwable> void adaptAndThrow(Class<T> type) throws T;
    
-   Throwable toThrowable();
+   Throwable toPipedThrowable();
 
    void throwPipe();
 

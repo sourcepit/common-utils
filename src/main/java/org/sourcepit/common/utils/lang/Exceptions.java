@@ -6,8 +6,10 @@
 
 package org.sourcepit.common.utils.lang;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.lang.reflect.Constructor;
 import java.util.List;
 
 /**
@@ -20,59 +22,158 @@ public final class Exceptions
       super();
    }
 
-   static ThrowablePipe newPipe(Throwable cause)
+   public static ThrowablePipe newThrowablePipe(Error cause)
    {
-      final ThrowablePipe pipe = new CopyOnWriteThrowablePipe();
-      pipe.add(cause);
-      return pipe;
+      return new CopyOnWriteThrowablePipe(cause);
    }
-   
+
+   public static ThrowablePipe newThrowablePipe(Exception cause)
+   {
+      return new CopyOnWriteThrowablePipe(cause);
+   }
+
    public static ThrowablePipe newThrowablePipe()
    {
       return new CopyOnWriteThrowablePipe();
    }
 
-   public static PipedException toPipedException(Exception exception)
+   public static PipedIOException pipe(IOException exception)
    {
-      if (exception instanceof PipedException)
-      {
-         return (PipedException) exception;
-      }
-      argNotNull(exception, 0);
-      return new PipedException(exception);
+      return (PipedIOException) doPipe(exception);
    }
 
-   public static PipedError toPipedError(Error error)
+   public static PipedException pipe(Exception exception)
    {
-      if (error instanceof PipedError)
-      {
-         return (PipedError) error;
-      }
-      argNotNull(error, 0);
-      return new PipedError(error);
+      return (PipedException) doPipe(exception);
    }
 
-   public static void throwPipe(ThrowablePipe carrier)
+   public static PipedError pipe(Error error)
    {
-      if (carrier != null)
+      return (PipedError) doPipe(error);
+   }
+
+   public static ThrowablePipe pipe(Throwable cause)
+   {
+      return doPipe(cause);
+   }
+
+   private static ThrowablePipe doPipe(Throwable cause)
+   {
+      argNotNull(cause, 0);
+
+      final Class<? extends Throwable> causeType = cause.getClass();
+      if (ThrowablePipe.class.isAssignableFrom(causeType))
       {
-         carrier.throwPipe();
+         return (ThrowablePipe) cause;
+      }
+
+      final Class<? extends ThrowablePipe> pipeType = getPipeType(causeType);
+      return newInstance(pipeType, cause);
+   }
+
+   static Throwable toPipedThrowable(ThrowablePipe throwablePipe)
+   {
+      argNotNull(throwablePipe, 0);
+      if (Throwable.class.isAssignableFrom(throwablePipe.getClass()))
+      {
+         return (Throwable) throwablePipe;
+      }
+
+      final Throwable cause = throwablePipe.getCause();
+      if (cause == null) // empty pipe
+      {
+         return null;
+      }
+
+      final Class<? extends Throwable> causeType;
+      if (cause instanceof Exception || cause instanceof Error) // omit Throwable
+      {
+         causeType = cause.getClass();
+      }
+      else
+      {
+         causeType = Error.class;
+      }
+
+      return (Throwable) newInstance(getPipeType(causeType), throwablePipe);
+   }
+
+   private static ThrowablePipe newInstance(Class<? extends ThrowablePipe> pipeType, Object arg)
+   {
+      try
+      {
+         return getConstructor(pipeType, arg.getClass()).newInstance(arg);
+      }
+      catch (Exception e)
+      {
+         throw new IllegalArgumentException(e);
       }
    }
 
-   public static ThrowablePipe toThrowablePipe(Throwable throwable)
+   @SuppressWarnings("unchecked")
+   private static Constructor<? extends ThrowablePipe> getConstructor(Class<? extends ThrowablePipe> pipeType,
+      Class<? extends Object> argClass) throws NoSuchMethodException
    {
-      if (throwable instanceof Error)
+      if (argClass != null)
       {
-         return toPipedError((Error) throwable);
-      }
-      else if (throwable instanceof Exception)
-      {
-         return toPipedException((Exception) throwable);
-      }
+         for (Constructor<?> constructor : pipeType.getDeclaredConstructors())
+         {
+            Class<?>[] parameterTypes = constructor.getParameterTypes();
+            if (parameterTypes.length == 1)
+            {
+               final Class<?> parameterType = parameterTypes[0];
+               if (parameterType.isAssignableFrom(argClass))
+               {
+                  return (Constructor<? extends ThrowablePipe>) constructor;
+               }
 
-      argNotNull(throwable, 0);
-      return toPipedError(new Error(throwable));
+               for (Class<?> interfaze : argClass.getInterfaces())
+               {
+                  if (parameterType.isAssignableFrom(interfaze))
+                  {
+                     return (Constructor<? extends ThrowablePipe>) constructor;
+                  }
+               }
+            }
+         }
+      }
+      return argClass == null ? null : getConstructor(pipeType, argClass.getSuperclass());
+   }
+
+   @SuppressWarnings("unchecked")
+   private static Class<? extends ThrowablePipe> getPipeType(Class<? extends Throwable> causeType)
+   {
+      if (Exception.class.isAssignableFrom(causeType))
+      {
+         return getPipedExceptionType((Class<? extends Exception>) causeType);
+      }
+      else if (Error.class.isAssignableFrom(causeType))
+      {
+         return getPipedErrorType((Class<? extends Error>) causeType);
+      }
+      return CopyOnWriteThrowablePipe.class;
+   }
+
+   private static Class<? extends PipedError> getPipedErrorType(Class<? extends Error> causeType)
+   {
+      return PipedError.class;
+   }
+
+   private static Class<? extends PipedException> getPipedExceptionType(Class<? extends Exception> causeType)
+   {
+      if (IOException.class.isAssignableFrom(causeType))
+      {
+         return PipedIOException.class;
+      }
+      return PipedException.class;
+   }
+
+   public static void throwPipe(ThrowablePipe pipe)
+   {
+      if (pipe != null)
+      {
+         pipe.throwPipe();
+      }
    }
 
    static void argNotNull(Object arg, int idx)
@@ -102,7 +203,7 @@ public final class Exceptions
       {
          return (A) pipe;
       }
-      final Throwable throwable = pipe.toThrowable();
+      final Throwable throwable = pipe.toPipedThrowable();
       if (throwable != null && type.isAssignableFrom(throwable.getClass()))
       {
          return (A) throwable;

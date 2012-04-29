@@ -7,11 +7,13 @@
 package org.sourcepit.common.utils.lang;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -29,7 +31,7 @@ public class PipedThrowableTest
    {
       try
       {
-         Exceptions.toThrowablePipe(null);
+         Exceptions.pipe((Throwable) null);
          fail();
       }
       catch (IllegalArgumentException e)
@@ -38,7 +40,7 @@ public class PipedThrowableTest
 
       try
       {
-         Exceptions.toPipedError(null);
+         Exceptions.pipe((Error) null);
          fail();
       }
       catch (IllegalArgumentException e)
@@ -47,7 +49,16 @@ public class PipedThrowableTest
 
       try
       {
-         Exceptions.toPipedException(null);
+         Exceptions.pipe((Exception) null);
+         fail();
+      }
+      catch (IllegalArgumentException e)
+      {
+      }
+
+      try
+      {
+         Exceptions.pipe((IOException) null);
          fail();
       }
       catch (IllegalArgumentException e)
@@ -55,9 +66,9 @@ public class PipedThrowableTest
       }
 
 
-      assertNullArgs(Exceptions.toPipedError(new Error()));
+      assertNullArgs(Exceptions.pipe(new Error()));
 
-      assertNullArgs(Exceptions.toPipedException(new Exception()));
+      assertNullArgs(Exceptions.pipe(new Exception()));
    }
 
    private void assertNullArgs(ThrowablePipe pipe)
@@ -101,12 +112,12 @@ public class PipedThrowableTest
    {
       Exception cause = new Exception();
 
-      PipedException tex = Exceptions.toPipedException(cause);
+      PipedException tex = Exceptions.pipe(cause);
       assertNotNull(tex);
       assertSame(cause, tex.getCause());
       assertTrue(tex.getFollowers().isEmpty());
 
-      PipedException tex2 = Exceptions.toPipedException(tex);
+      PipedException tex2 = Exceptions.pipe(tex);
       assertNotNull(tex);
       assertSame(tex, tex2);
       assertSame(cause, tex2.getCause());
@@ -118,12 +129,12 @@ public class PipedThrowableTest
    {
       Error cause = new Error();
 
-      PipedError tex = Exceptions.toPipedError(cause);
+      PipedError tex = Exceptions.pipe(cause);
       assertNotNull(tex);
       assertSame(cause, tex.getCause());
       assertTrue(tex.getFollowers().isEmpty());
 
-      PipedError tex2 = Exceptions.toPipedError(tex);
+      PipedError tex2 = Exceptions.pipe(tex);
       assertNotNull(tex);
       assertSame(tex, tex2);
       assertSame(cause, tex2.getCause());
@@ -131,11 +142,26 @@ public class PipedThrowableTest
    }
 
    @Test
+   public void testPipeThrowable() throws Exception
+   {
+      Throwable cause = new Throwable();
+
+      ThrowablePipe tex = Exceptions.pipe(cause);
+      assertNotNull(tex);
+      assertSame(cause, tex.getCause());
+      assertTrue(tex.getFollowers().isEmpty());
+      assertFalse(tex instanceof Throwable);
+      
+      PipedError pipedError = (PipedError) tex.toPipedThrowable(); // test omitted throwable
+      assertSame(cause, pipedError.getCause());
+   }
+
+   @Test
    public void testPipedExceptionAdaptAndThrow()
    {
       IllegalStateException initialCause = new IllegalStateException(new NullPointerException());
 
-      ThrowablePipe pipe = Exceptions.toThrowablePipe(initialCause);
+      ThrowablePipe pipe = Exceptions.pipe(initialCause);
       pipe.add(new NullPointerException());
 
       try
@@ -212,7 +238,7 @@ public class PipedThrowableTest
    {
       MyError initialCause = new MyError(new NullPointerException());
 
-      ThrowablePipe pipe = Exceptions.toThrowablePipe(initialCause);
+      ThrowablePipe pipe = Exceptions.pipe(initialCause);
       pipe.add(new NullPointerException());
 
       try
