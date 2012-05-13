@@ -18,9 +18,9 @@ import org.sourcepit.common.utils.lang.ThrowablePipe;
  */
 public abstract class IOOperation<R extends Closeable> implements Runnable
 {
-   private final IOResource<R> resource;
+   private final IOResource<? extends R> resource;
 
-   public IOOperation(IOResource<R> resource)
+   public IOOperation(IOResource<? extends R> resource)
    {
       this.resource = resource;
    }
