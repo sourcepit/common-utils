@@ -34,6 +34,16 @@ public class IOResources
    {
       return new JarInputStreamResource(resource);
    }
+   
+   public static ZipInputStreamResource zipIn(IOResource<? extends InputStream> resource)
+   {
+      return new ZipInputStreamResource(resource);
+   }
+   
+   public static ZipEntryResource zipIn(IOResource<? extends InputStream> resource, String entryName)
+   {
+      return new ZipEntryResource(resource, entryName);
+   }
 
    public static FileOutputStreamResource fileOut(File file)
    {
@@ -53,5 +63,10 @@ public class IOResources
    public static JarOutputStreamResource jarOut(IOResource<? extends OutputStream> resource)
    {
       return new JarOutputStreamResource(resource);
+   }
+   
+   public static ZipOutputStreamResource zipOut(IOResource<? extends OutputStream> resource)
+   {
+      return new ZipOutputStreamResource(resource);
    }
 }
