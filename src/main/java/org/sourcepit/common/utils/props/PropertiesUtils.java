@@ -18,6 +18,7 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
+import java.util.Dictionary;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -95,13 +96,15 @@ public final class PropertiesUtils
       }
    }
 
-   public static void load(File propertiesFile, final Map<String, String> properties)
+   @SuppressWarnings("rawtypes")
+   public static void load(File propertiesFile, final Dictionary/* <String, String> */properties)
    {
       final Properties delegate = new Properties()
       {
          private static final long serialVersionUID = 1L;
 
          @Override
+         @SuppressWarnings("unchecked")
          public synchronized Object put(Object key, Object value)
          {
             properties.put(key.toString(), value.toString());
@@ -111,13 +114,15 @@ public final class PropertiesUtils
       load(propertiesFile, delegate);
    }
 
-   public static void load(InputStream inputStream, final Map<String, String> properties)
+   @SuppressWarnings("rawtypes")
+   public static void load(InputStream inputStream, final Dictionary/* <String, String> */properties)
    {
       final Properties delegate = new Properties()
       {
          private static final long serialVersionUID = 1L;
 
          @Override
+         @SuppressWarnings("unchecked")
          public synchronized Object put(Object key, Object value)
          {
             properties.put(key.toString(), value.toString());
@@ -127,7 +132,44 @@ public final class PropertiesUtils
       load(inputStream, delegate);
    }
 
-   public static void load(ClassLoader classLoader, String resourcePath, final Map<String, String> properties)
+   @SuppressWarnings("rawtypes")
+   public static void load(File propertiesFile, final Map/* <String, String> */properties)
+   {
+      final Properties delegate = new Properties()
+      {
+         private static final long serialVersionUID = 1L;
+
+         @Override
+         @SuppressWarnings("unchecked")
+         public synchronized Object put(Object key, Object value)
+         {
+            properties.put(key.toString(), value.toString());
+            return super.put(key, value);
+         }
+      };
+      load(propertiesFile, delegate);
+   }
+
+   @SuppressWarnings("rawtypes")
+   public static void load(InputStream inputStream, final Map/* <String, String> */properties)
+   {
+      final Properties delegate = new Properties()
+      {
+         private static final long serialVersionUID = 1L;
+
+         @Override
+         @SuppressWarnings("unchecked")
+         public synchronized Object put(Object key, Object value)
+         {
+            properties.put(key.toString(), value.toString());
+            return super.put(key, value);
+         }
+      };
+      load(inputStream, delegate);
+   }
+
+   @SuppressWarnings("rawtypes")
+   public static void load(ClassLoader classLoader, String resourcePath, final Map/* <String, String> */properties)
    {
       final InputStream inputStream = classLoader.getResourceAsStream(resourcePath);
       if (inputStream == null)
@@ -144,7 +186,8 @@ public final class PropertiesUtils
       load(inputStream, properties);
    }
 
-   public static <K, V> void putMap(Map<String, String> target, Map<K, V> map)
+   @SuppressWarnings({ "unchecked", "rawtypes" })
+   public static <K, V> void putMap(Map/* <String, String> */target, Map<K, V> map)
    {
       for (Entry<K, V> entry : map.entrySet())
       {

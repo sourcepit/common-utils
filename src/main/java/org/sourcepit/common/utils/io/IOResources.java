@@ -9,6 +9,7 @@ package org.sourcepit.common.utils.io;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
@@ -34,15 +35,25 @@ public class IOResources
    {
       return new JarInputStreamResource(resource);
    }
-   
+
    public static ZipInputStreamResource zipIn(IOResource<? extends InputStream> resource)
    {
       return new ZipInputStreamResource(resource);
    }
-   
+
    public static ZipEntryResource zipIn(IOResource<? extends InputStream> resource, String entryName)
    {
       return new ZipEntryResource(resource, entryName);
+   }
+
+   public static URLResource urlIn(URL url)
+   {
+      return new URLResource(url);
+   }
+
+   public static ClassPathResource cpIn(ClassLoader classLoader, String name)
+   {
+      return new ClassPathResource(classLoader, name);
    }
 
    public static FileOutputStreamResource fileOut(File file)
@@ -64,7 +75,7 @@ public class IOResources
    {
       return new JarOutputStreamResource(resource);
    }
-   
+
    public static ZipOutputStreamResource zipOut(IOResource<? extends OutputStream> resource)
    {
       return new ZipOutputStreamResource(resource);
