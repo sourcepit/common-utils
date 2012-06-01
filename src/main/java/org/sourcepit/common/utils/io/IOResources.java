@@ -55,6 +55,18 @@ public class IOResources
    {
       return new ClassPathResource(classLoader, name);
    }
+   
+   public static IOResource<? extends InputStream> osgiIn(File bundleLocation, String entryName)
+   {
+      if (bundleLocation.isDirectory())
+      {
+         return buffIn(fileIn(new File(bundleLocation, entryName)));
+      }
+      else
+      {
+         return zipIn(buffIn(fileIn(bundleLocation)), entryName);
+      }
+   }
 
    public static FileOutputStreamResource fileOut(File file)
    {
