@@ -8,6 +8,7 @@ package org.sourcepit.common.utils.props;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Map;
 import java.util.Properties;
 
@@ -39,4 +40,8 @@ public interface PropertiesMap extends Map<String, String>
     * @throws IllegalStateException if an error occurred when reading from the input stream.
     */
    void load(File file);
+   
+   void store(File file);
+   
+   void store(OutputStream outputStream);
 }

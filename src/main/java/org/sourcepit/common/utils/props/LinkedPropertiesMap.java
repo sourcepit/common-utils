@@ -8,6 +8,7 @@ package org.sourcepit.common.utils.props;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -126,5 +127,15 @@ public class LinkedPropertiesMap extends LinkedHashMap<String, String> implement
    public void load(ClassLoader classLoader, String resourcePath)
    {
       PropertiesUtils.load(classLoader, resourcePath, this);
+   }
+
+   public void store(File file)
+   {
+      PropertiesUtils.store(this, file);
+   }
+
+   public void store(OutputStream outputStream)
+   {
+      PropertiesUtils.store(this, outputStream);
    }
 }
