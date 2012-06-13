@@ -16,9 +16,29 @@ import java.net.URL;
  */
 public class IOResources
 {
+   public static FileInputStreamResource fileIn(String path)
+   {
+      return fileIn(new File(path));
+   }
+
+   public static FileInputStreamResource fileIn(File parent, String path)
+   {
+      return fileIn(new File(parent, path));
+   }
+
    public static FileInputStreamResource fileIn(File file)
    {
       return new FileInputStreamResource(file);
+   }
+
+   public static FileInputStreamResource fileIn(String path, boolean createOnDemand)
+   {
+      return fileIn(new File(path), createOnDemand);
+   }
+
+   public static FileInputStreamResource fileIn(File parent, String path, boolean createOnDemand)
+   {
+      return fileIn(new File(parent, path), createOnDemand);
    }
 
    public static FileInputStreamResource fileIn(File file, boolean createOnDemand)
@@ -55,7 +75,7 @@ public class IOResources
    {
       return new ClassPathResource(classLoader, name);
    }
-   
+
    public static IOResource<? extends InputStream> osgiIn(File bundleLocation, String entryName)
    {
       if (bundleLocation.isDirectory())
@@ -68,9 +88,29 @@ public class IOResources
       }
    }
 
+   public static FileOutputStreamResource fileOut(String path)
+   {
+      return fileOut(new File(path));
+   }
+
+   public static FileOutputStreamResource fileOut(File parent, String path)
+   {
+      return fileOut(new File(parent, path));
+   }
+
    public static FileOutputStreamResource fileOut(File file)
    {
       return new FileOutputStreamResource(file);
+   }
+
+   public static FileOutputStreamResource fileOut(String path, boolean createOnDemand)
+   {
+      return fileOut(new File(path), createOnDemand);
+   }
+
+   public static FileOutputStreamResource fileOut(File parent, String path, boolean createOnDemand)
+   {
+      return fileOut(new File(parent, path), createOnDemand);
    }
 
    public static FileOutputStreamResource fileOut(File file, boolean createOnDemand)

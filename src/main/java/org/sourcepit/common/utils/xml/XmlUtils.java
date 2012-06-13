@@ -8,6 +8,8 @@ package org.sourcepit.common.utils.xml;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -39,15 +41,26 @@ public final class XmlUtils
       super();
    }
 
-   public static Document readXml(File xmlFile) throws IllegalArgumentException
+   public static Document newDocument()
+   {
+      final DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
+      final DocumentBuilder docBuilder;
+      try
+      {
+         docBuilder = dbfac.newDocumentBuilder();
+      }
+      catch (ParserConfigurationException e)
+      {
+         throw new IllegalStateException(e);
+      }
+      return docBuilder.newDocument();
+   }
+
+   public static Document readXml(InputStream inputStream)
    {
       try
       {
-         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-         factory.setIgnoringComments(false);
-         factory.setIgnoringElementContentWhitespace(true);
-         final DocumentBuilder builder = factory.newDocumentBuilder();
-         return builder.parse(xmlFile);
+         return newDocumentBuilder().parse(inputStream);
       }
       catch (IOException e)
       {
@@ -58,6 +71,58 @@ public final class XmlUtils
          throw new IllegalArgumentException(e);
       }
       catch (ParserConfigurationException e)
+      {
+         throw new IllegalStateException(e);
+      }
+   }
+
+   public static Document readXml(File xmlFile) throws IllegalArgumentException
+   {
+      try
+      {
+         return newDocumentBuilder().parse(xmlFile);
+      }
+      catch (IOException e)
+      {
+         throw new IllegalArgumentException(e);
+      }
+      catch (SAXException e)
+      {
+         throw new IllegalArgumentException(e);
+      }
+      catch (ParserConfigurationException e)
+      {
+         throw new IllegalStateException(e);
+      }
+   }
+
+   private static DocumentBuilder newDocumentBuilder() throws ParserConfigurationException
+   {
+      final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      factory.setIgnoringComments(false);
+      factory.setIgnoringElementContentWhitespace(true);
+      return factory.newDocumentBuilder();
+   }
+   
+   public static void writeXml(Document doc, OutputStream outputStream)
+   {
+      try
+      {
+         // Prepare the DOM document for writing
+         Source source = new DOMSource(doc);
+
+         // Prepare the output file
+         Result result = new StreamResult(outputStream);
+
+         // Write the DOM document to the file
+         Transformer xformer = TransformerFactory.newInstance().newTransformer();
+         xformer.transform(source, result);
+      }
+      catch (TransformerConfigurationException e)
+      {
+         throw new IllegalStateException(e);
+      }
+      catch (TransformerException e)
       {
          throw new IllegalStateException(e);
       }
