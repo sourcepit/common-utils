@@ -52,7 +52,7 @@
 						<dependency>
 							<groupId>org.eclipse.tycho</groupId>
 							<artifactId>tycho-compiler-jdt</artifactId>
-							<version>0.14.1</version>
+							<version>0.15.0</version>
 						</dependency>
 					</dependencies>
 				</plugin>
