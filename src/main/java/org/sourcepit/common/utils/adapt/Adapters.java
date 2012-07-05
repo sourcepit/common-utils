@@ -149,7 +149,7 @@ public final class Adapters
    }
 
    @SuppressWarnings("unchecked")
-   private static <A> A findAdapter(List<Object> adapters, Class<A> adapterType)
+   public static <A> A findAdapter(List<Object> adapters, Class<A> adapterType)
    {
       for (Object adapter : adapters)
       {
@@ -161,7 +161,7 @@ public final class Adapters
       return null;
    }
 
-   private static <A> boolean isAdapterForType(Object adapter, Class<A> adapterType)
+   public static <A> boolean isAdapterForType(Object adapter, Class<A> adapterType)
    {
       return adapterType.isAssignableFrom(adapter.getClass());
    }
