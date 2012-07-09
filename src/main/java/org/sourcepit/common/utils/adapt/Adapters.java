@@ -41,25 +41,13 @@ public final class Adapters
       }
    }
 
-   @SuppressWarnings("unchecked")
    public static <A> List<A> getAdapters(Object adaptable, Class<A> adapterType)
    {
       RW_LOCK.readLock().lock();
       try
       {
-         final List<A> result = new ArrayList<A>();
          final List<Object> adapters = ADAPTERS.get(adaptable);
-         if (adapters != null)
-         {
-            for (Object adapter : adapters)
-            {
-               if (isAdapterForType(adapter, adapterType))
-               {
-                  result.add((A) adapter);
-               }
-            }
-         }
-         return result;
+         return findAdapters(adapters, adapterType);
       }
       finally
       {
@@ -114,6 +102,23 @@ public final class Adapters
       }
    }
 
+   public static <A> void removeAdapters(Object adaptable, Class<A> adapterType)
+   {
+      RW_LOCK.writeLock().lock();
+      try
+      {
+         final List<Object> adapters = ADAPTERS.get(adaptable);
+         if (adapters != null)
+         {
+            adapters.removeAll(findAdapters(adapters, adapterType));
+         }
+      }
+      finally
+      {
+         RW_LOCK.writeLock().unlock();
+      }
+   }
+
    private static <A> A newAdapter(AbstractAdapterFactory adapterFactory, Object adaptable, Class<A> adapterType)
    {
       RW_LOCK.writeLock().lock();
@@ -159,6 +164,23 @@ public final class Adapters
          }
       }
       return null;
+   }
+
+   @SuppressWarnings("unchecked")
+   public static <A> List<A> findAdapters(final List<Object> adapters, Class<A> adapterType)
+   {
+      final List<A> result = new ArrayList<A>();
+      if (adapters != null)
+      {
+         for (Object adapter : adapters)
+         {
+            if (isAdapterForType(adapter, adapterType))
+            {
+               result.add((A) adapter);
+            }
+         }
+      }
+      return result;
    }
 
    public static <A> boolean isAdapterForType(Object adapter, Class<A> adapterType)
