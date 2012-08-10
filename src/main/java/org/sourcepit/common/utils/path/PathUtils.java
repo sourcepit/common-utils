@@ -68,6 +68,11 @@ public final class PathUtils
 
       final String[] base = segments(normalizedBasePath, pathSeparator);
       final String[] target = segments(normalizedTargetPath, pathSeparator);
+      
+      if (normalizedTargetPath.equals(normalizedBasePath))
+      {
+         return "";
+      }
 
       // First get all the common elements. Store them as a string,
       // and also count how many of them there are.

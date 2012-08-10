@@ -34,6 +34,11 @@ public class PathUtilsTest extends TestCase
       assertEquals("hans.txt", PathUtils.trimFileExtension("hans.txt.xml"));
    }
 
+   public void testGetRelativePathsEqualPaths() throws Exception
+   {
+      assertEquals("", PathUtils.getRelativePath("/var", "/var", "/"));
+   }
+
    public void testGetRelativePathsUnix()
    {
       assertEquals("stuff/xyz.dat", PathUtils.getRelativePath("/var/data/stuff/xyz.dat", "/var/data/", "/"));
