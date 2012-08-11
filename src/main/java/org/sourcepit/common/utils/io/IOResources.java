@@ -50,6 +50,11 @@ public class IOResources
    {
       return new BufferedInputStreamResource(resource);
    }
+   
+   public static ByteArrayInputStreamResource byteIn(byte[] bytes)
+   {
+      return new ByteArrayInputStreamResource(bytes);
+   }
 
    public static JarInputStreamResource jarIn(IOResource<? extends InputStream> resource)
    {
