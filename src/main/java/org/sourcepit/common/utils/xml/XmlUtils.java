@@ -40,6 +40,11 @@ public final class XmlUtils
    {
       super();
    }
+   
+   public static String getEncoding(InputStream inputStream)
+   {
+      return SAXEncodingDetector.parse(inputStream);
+   }
 
    public static Document newDocument()
    {
