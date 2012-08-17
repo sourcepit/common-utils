@@ -26,8 +26,14 @@ public class EntryCountBasedZipPartitioner implements ZipPartitioner
       final int numberOfPartitions = computeNumberOfPartitions(numberOfThreads, numberOfBytes, numberOfEntries);
 
       int jobsSize = numberOfEntries / numberOfPartitions;
-      int leftover = numberOfPartitions % numberOfPartitions;
-      
+      int leftover = numberOfEntries % numberOfPartitions;
+
+      if (numberOfPartitions * jobsSize + leftover != numberOfEntries)
+      {
+         throw new IllegalStateException("Invalid zip partition computation ( entries " + numberOfEntries
+            + ", partitions " + numberOfPartitions + ", leftover " + leftover + ")");
+      }
+
       final Collection<Callable<Integer>> tasks = new ArrayList<Callable<Integer>>();
       if (jobsSize > 0)
       {
