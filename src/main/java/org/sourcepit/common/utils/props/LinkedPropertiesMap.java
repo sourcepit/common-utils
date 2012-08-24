@@ -114,6 +114,16 @@ public class LinkedPropertiesMap extends LinkedHashMap<String, String> implement
       PropertiesUtils.setBoolean(this, key, value);
    }
 
+   public int getInt(String key, int defaultValue)
+   {
+      return PropertiesUtils.getInt(this, key, defaultValue);
+   }
+
+   public void setInt(String key, int value)
+   {
+      PropertiesUtils.setInt(this, key, value);
+   }
+
    public void load(InputStream inputStream)
    {
       PropertiesUtils.load(inputStream, this);

@@ -396,4 +396,14 @@ public final class PropertiesUtils
    {
       map.put(key, Boolean.toString(value));
    }
+   
+   public static int getInt(Map<String, String> map, String key, int defaultValue)
+   {
+      return Integer.valueOf(getProperty(map, key, Integer.toString(defaultValue))).intValue();
+   }
+   
+   public static void setInt(Map<String, String> map, String key, int value)
+   {
+      map.put(key, Integer.toString(value));
+   }
 }

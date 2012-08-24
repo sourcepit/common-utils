@@ -21,6 +21,10 @@ public interface PropertiesMap extends Map<String, String>
    void setBoolean(String key, boolean value);
 
    boolean getBoolean(String key, boolean defaultValue);
+   
+   void setInt(String key, int value);
+   
+   int getInt(String key, int defaultValue);
 
    Properties toJavaProperties();
 

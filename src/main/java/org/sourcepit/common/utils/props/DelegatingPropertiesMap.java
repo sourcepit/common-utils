@@ -184,6 +184,30 @@ public class DelegatingPropertiesMap implements PropertiesMap
       }
    }
 
+   public int getInt(String key, int defaultValue)
+   {
+      if (delegate instanceof PropertiesMap)
+      {
+         return ((PropertiesMap) delegate).getInt(key, defaultValue);
+      }
+      else
+      {
+         return PropertiesUtils.getInt(this, key, defaultValue);
+      }
+   }
+   
+   public void setInt(String key, int value)
+   {
+      if (delegate instanceof PropertiesMap)
+      {
+         ((PropertiesMap) delegate).setInt(key, value);
+      }
+      else
+      {
+         PropertiesUtils.setInt(this, key, value);
+      }      
+   }
+
    public String remove(Object key)
    {
       return delegate.remove(key);
