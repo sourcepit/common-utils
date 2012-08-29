@@ -62,7 +62,7 @@ public class DelegatingPropertiesMap implements PropertiesMap
    {
       if (delegate instanceof PropertiesMap)
       {
-         return ((PropertiesMap) delegate).get(key, defaultValue);
+         return ((PropertiesSource) delegate).get(key, defaultValue);
       }
       else
       {
@@ -150,6 +150,11 @@ public class DelegatingPropertiesMap implements PropertiesMap
       return delegate.containsValue(value);
    }
 
+   public String get(String key)
+   {
+      return get((Object) key);
+   }
+
    public String get(Object key)
    {
       return delegate.get(key);
@@ -164,7 +169,7 @@ public class DelegatingPropertiesMap implements PropertiesMap
    {
       if (delegate instanceof PropertiesMap)
       {
-         return ((PropertiesMap) delegate).getBoolean(key, defaultValue);
+         return ((PropertiesSource) delegate).getBoolean(key, defaultValue);
       }
       else
       {
@@ -188,14 +193,14 @@ public class DelegatingPropertiesMap implements PropertiesMap
    {
       if (delegate instanceof PropertiesMap)
       {
-         return ((PropertiesMap) delegate).getInt(key, defaultValue);
+         return ((PropertiesSource) delegate).getInt(key, defaultValue);
       }
       else
       {
          return PropertiesUtils.getInt(this, key, defaultValue);
       }
    }
-   
+
    public void setInt(String key, int value)
    {
       if (delegate instanceof PropertiesMap)
@@ -205,7 +210,7 @@ public class DelegatingPropertiesMap implements PropertiesMap
       else
       {
          PropertiesUtils.setInt(this, key, value);
-      }      
+      }
    }
 
    public String remove(Object key)

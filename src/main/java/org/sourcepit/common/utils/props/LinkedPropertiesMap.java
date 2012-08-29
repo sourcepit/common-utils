@@ -83,6 +83,11 @@ public class LinkedPropertiesMap extends LinkedHashMap<String, String> implement
       }
    }
 
+   public String get(String key)
+   {
+      return get((Object) key);
+   }
+
    @Override
    public String get(Object key)
    {

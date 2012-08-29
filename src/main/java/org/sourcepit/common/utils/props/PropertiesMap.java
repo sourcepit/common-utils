@@ -12,20 +12,14 @@ import java.io.OutputStream;
 import java.util.Map;
 import java.util.Properties;
 
-public interface PropertiesMap extends Map<String, String>
+public interface PropertiesMap extends Map<String, String>, PropertiesSource
 {
    Map<String, String> getDefaultProperties();
 
-   String get(String key, String defaultValue);
-
    void setBoolean(String key, boolean value);
 
-   boolean getBoolean(String key, boolean defaultValue);
-   
    void setInt(String key, int value);
    
-   int getInt(String key, int defaultValue);
-
    Properties toJavaProperties();
 
    <K extends Object, V extends Object> void putMap(Map<K, V> map);
