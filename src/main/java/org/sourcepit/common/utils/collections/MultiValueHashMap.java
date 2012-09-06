@@ -6,6 +6,7 @@
 
 package org.sourcepit.common.utils.collections;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -17,6 +18,11 @@ public class MultiValueHashMap<K, V> extends HashMap<K, Collection<V>> implement
    private static final long serialVersionUID = 1L;
 
    private final Class<? extends Collection<V>> implType;
+
+   public MultiValueHashMap()
+   {
+      this(ArrayList.class);
+   }
 
    @SuppressWarnings("unchecked")
    public MultiValueHashMap(@SuppressWarnings("rawtypes") Class<? extends Collection> implType)
