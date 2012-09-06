@@ -67,7 +67,7 @@ public class PathMatcher
          }
          else
          {
-            return patternString.split(patternSeparator);
+            return patternString.split(escRegEx(patternSeparator));
          }
       }
 
