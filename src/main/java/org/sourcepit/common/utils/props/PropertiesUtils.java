@@ -389,19 +389,29 @@ public final class PropertiesUtils
 
    public static boolean getBoolean(Map<String, String> map, String key, boolean defaultValue)
    {
-      return Boolean.valueOf(getProperty(map, key, Boolean.toString(defaultValue))).booleanValue();
+      return toBoolean(map.get(key), defaultValue);
+   }
+
+   public static boolean toBoolean(String value, boolean defaultValue)
+   {
+      return value == null ? defaultValue : Boolean.valueOf(value).booleanValue();
    }
 
    public static void setBoolean(Map<String, String> map, String key, boolean value)
    {
       map.put(key, Boolean.toString(value));
    }
-   
+
    public static int getInt(Map<String, String> map, String key, int defaultValue)
    {
-      return Integer.valueOf(getProperty(map, key, Integer.toString(defaultValue))).intValue();
+      return toInt(map.get(key), defaultValue);
    }
-   
+
+   public static int toInt(String value, int defaultValue)
+   {
+      return value == null ? defaultValue : Integer.valueOf(value).intValue();
+   }
+
    public static void setInt(Map<String, String> map, String key, int value)
    {
       map.put(key, Integer.toString(value));
