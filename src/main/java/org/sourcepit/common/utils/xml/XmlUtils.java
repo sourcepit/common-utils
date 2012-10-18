@@ -59,14 +59,18 @@ public final class XmlUtils
       {
          throw new IllegalStateException(e);
       }
-      return docBuilder.newDocument();
+      final Document document = docBuilder.newDocument();
+      document.setXmlStandalone(true);
+      return document;
    }
 
    public static Document readXml(InputStream inputStream)
    {
       try
       {
-         return newDocumentBuilder().parse(inputStream);
+         Document document = newDocumentBuilder().parse(inputStream);
+         document.setXmlStandalone(true);
+         return document;
       }
       catch (IOException e)
       {
@@ -86,7 +90,9 @@ public final class XmlUtils
    {
       try
       {
-         return newDocumentBuilder().parse(xmlFile);
+         Document document = newDocumentBuilder().parse(xmlFile);
+         document.setXmlStandalone(true);
+         return document;
       }
       catch (IOException e)
       {
@@ -163,6 +169,15 @@ public final class XmlUtils
 
          // Write the DOM document to the file
          Transformer xformer = TransformerFactory.newInstance().newTransformer();
+         
+         try
+         {
+            xformer.setOutputProperty(OutputKeys.INDENT, "yes");
+         }
+         catch (IllegalArgumentException e)
+         { // ignore
+         }
+
          xformer.transform(source, result);
       }
       catch (TransformerConfigurationException e)
