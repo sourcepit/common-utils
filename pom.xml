@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.sourcepit</groupId>
 		<artifactId>srcpit-parent</artifactId>
-		<version>7</version>
+		<version>9</version>
 	</parent>
 	<groupId>org.sourcepit.common</groupId>
 	<artifactId>common-utils</artifactId>
@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>org.sourcepit.common</groupId>
 			<artifactId>common-testing</artifactId>
-			<version>0.1.0-alpha-6</version>
+			<version>0.1.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -52,7 +52,6 @@
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
-			<version>1</version>
 		</dependency>
 	</dependencies>
 
@@ -83,29 +82,12 @@
 						<dependency>
 							<groupId>org.eclipse.tycho</groupId>
 							<artifactId>tycho-compiler-jdt</artifactId>
-							<version>0.15.0</version>
+							<version>0.16.0</version>
 						</dependency>
 					</dependencies>
 				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
-
-	<profiles>
-		<profile>
-			<id>vr</id>
-			<distributionManagement>
-				<snapshotRepository>
-					<id>srcpit.snapshots</id>
-					<uniqueVersion>false</uniqueVersion>
-					<url>${env.VR_MAVEN_REPO_URL}/srcpit-snapshots/</url>
-				</snapshotRepository>
-				<repository>
-					<id>srcpit.releases</id>
-					<url>${env.VR_MAVEN_REPO_URL}/srcpit-releases/</url>
-				</repository>
-			</distributionManagement>
-		</profile>
-	</profiles>
-
+	
 </project>
