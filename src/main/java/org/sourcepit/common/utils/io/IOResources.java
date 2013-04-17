@@ -6,16 +6,92 @@
 
 package org.sourcepit.common.utils.io;
 
+import java.io.Closeable;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+
+import org.sourcepit.common.utils.lang.Exceptions;
+import org.sourcepit.common.utils.lang.PipedException;
+import org.sourcepit.common.utils.lang.ThrowablePipe;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
 public class IOResources
 {
+
+   public static <Resource extends Closeable, Content> Content read(IOResource<? extends Resource> resource,
+      Read<Resource, Content> operation) throws PipedException
+   {
+      ThrowablePipe error = null;
+      Resource openResource = null;
+      try
+      {
+         openResource = resource.open();
+         return operation.read(openResource);
+      }
+      catch (Throwable e)
+      {
+         error = Exceptions.pipe(e);
+         throw new Error(); // fake compiler
+      }
+      finally
+      {
+         closeAndThrow(openResource, error);
+      }
+   }
+
+   public static <Resource extends Closeable, Content> void write(Content content,
+      IOResource<? extends Resource> resource, Write<Resource, Content> operation) throws PipedException
+   {
+      ThrowablePipe error = null;
+      Resource openResource = null;
+      try
+      {
+         openResource = resource.open();
+         operation.write(openResource, content);
+      }
+      catch (Throwable e)
+      {
+         error = Exceptions.pipe(e);
+      }
+      finally
+      {
+         closeAndThrow(openResource, error);
+      }
+   }
+
+   private static void closeAndThrow(Closeable closeable, ThrowablePipe errors) throws PipedException
+   {
+      if (closeable != null)
+      {
+         try
+         {
+            closeable.close();
+         }
+         catch (IOException e)
+         {
+            if (errors == null)
+            {
+               errors = Exceptions.pipe(e);
+            }
+            else
+            {
+               errors.add(e);
+            }
+         }
+      }
+
+      if (errors != null)
+      {
+         errors.throwPipe();
+      }
+   }
+
+
    public static FileInputStreamResource fileIn(String path)
    {
       return fileIn(new File(path));
@@ -50,7 +126,7 @@ public class IOResources
    {
       return new BufferedInputStreamResource(resource);
    }
-   
+
    public static ByteArrayInputStreamResource byteIn(byte[] bytes)
    {
       return new ByteArrayInputStreamResource(bytes);
