@@ -7,8 +7,22 @@
 package org.sourcepit.common.utils.io;
 
 import java.io.Closeable;
+import java.io.InputStream;
+import java.io.Reader;
 
 public interface Read<Resource extends Closeable, Content>
 {
    Content read(Resource openResource) throws Exception;
+
+   public interface FromReader<Content> extends Read<java.io.Reader, Content>
+   {
+      @Override
+      public Content read(Reader reader) throws Exception;
+   }
+
+   public interface FromStream<Content> extends Read<InputStream, Content>
+   {
+      @Override
+      public Content read(InputStream inputStream) throws Exception;
+   }
 }

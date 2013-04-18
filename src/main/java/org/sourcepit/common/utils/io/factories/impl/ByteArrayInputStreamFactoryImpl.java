@@ -4,16 +4,19 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io;
+package org.sourcepit.common.utils.io.factories.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-public class ByteArrayInputStreamResource implements IOResource<ByteArrayInputStream>
+import org.sourcepit.common.utils.io.factories.ByteArrayInputStreamFactory;
+
+
+public class ByteArrayInputStreamFactoryImpl implements ByteArrayInputStreamFactory
 {
    private final byte[] bytes;
 
-   public ByteArrayInputStreamResource(byte[] bytes)
+   public ByteArrayInputStreamFactoryImpl(byte[] bytes)
    {
       this.bytes = bytes;
    }

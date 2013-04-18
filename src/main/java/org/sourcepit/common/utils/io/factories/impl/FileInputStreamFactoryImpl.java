@@ -4,28 +4,29 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io;
+package org.sourcepit.common.utils.io.factories.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.sourcepit.common.utils.file.FileUtils;
+import org.sourcepit.common.utils.io.factories.FileInputStreamFactory;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class FileInputStreamResource implements IOResource<FileInputStream>
+public class FileInputStreamFactoryImpl implements FileInputStreamFactory
 {
    protected final File file;
    protected final boolean createOnDemand;
 
-   public FileInputStreamResource(File file)
+   public FileInputStreamFactoryImpl(File file)
    {
       this(file, false);
    }
 
-   public FileInputStreamResource(File file, boolean createOnDemand)
+   public FileInputStreamFactoryImpl(File file, boolean createOnDemand)
    {
       this.file = file;
       this.createOnDemand = createOnDemand;

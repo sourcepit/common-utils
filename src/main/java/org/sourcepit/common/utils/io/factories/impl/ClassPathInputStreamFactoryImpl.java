@@ -4,18 +4,21 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io;
+package org.sourcepit.common.utils.io.factories.impl;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ClassPathResource implements IOResource<InputStream>
+import org.sourcepit.common.utils.io.factories.InputStreamFactory;
+
+
+public class ClassPathInputStreamFactoryImpl implements InputStreamFactory
 {
    private ClassLoader classLoader;
    private String name;
 
-   public ClassPathResource(ClassLoader classLoader, String name)
+   public ClassPathInputStreamFactoryImpl(ClassLoader classLoader, String name)
    {
       this.classLoader = classLoader;
       this.name = name;

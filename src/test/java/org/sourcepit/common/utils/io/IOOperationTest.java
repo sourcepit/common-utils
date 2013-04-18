@@ -33,7 +33,7 @@ public class IOOperationTest
    public void testRunOperation() throws Exception
    {
       @SuppressWarnings("unchecked")
-      final IOResource<Closeable> resource = mock(IOResource.class);
+      final IOFactory<Closeable> resource = mock(IOFactory.class);
 
       final Closeable closeable = mock(Closeable.class);
       when(resource.open()).thenReturn(closeable);
@@ -62,7 +62,7 @@ public class IOOperationTest
       doThrow(new IOException()).when(closeable).close();
 
       @SuppressWarnings("unchecked")
-      final IOResource<Closeable> resource = mock(IOResource.class);
+      final IOFactory<Closeable> resource = mock(IOFactory.class);
       when(resource.open()).thenReturn(closeable);
 
       final AtomicInteger operationCalls = new AtomicInteger();
@@ -100,7 +100,7 @@ public class IOOperationTest
       doThrow(new IOException()).when(closeable).close();
 
       @SuppressWarnings("unchecked")
-      final IOResource<Closeable> resource = mock(IOResource.class);
+      final IOFactory<Closeable> resource = mock(IOFactory.class);
       when(resource.open()).thenReturn(closeable);
 
       final AtomicInteger operationCalls = new AtomicInteger();
@@ -135,7 +135,7 @@ public class IOOperationTest
    public void testThrowIOExceptionOnOpenResource() throws Exception
    {
       @SuppressWarnings("unchecked")
-      final IOResource<Closeable> resource = mock(IOResource.class);
+      final IOFactory<Closeable> resource = mock(IOFactory.class);
       doThrow(new IOException()).when(resource).open();
 
       final AtomicInteger operationCalls = new AtomicInteger();
@@ -166,7 +166,7 @@ public class IOOperationTest
    public void testThrowErrorOnOpenResource() throws Exception
    {
       @SuppressWarnings("unchecked")
-      final IOResource<Closeable> resource = mock(IOResource.class);
+      final IOFactory<Closeable> resource = mock(IOFactory.class);
       doThrow(new OutOfMemoryError()).when(resource).open();
 
       final AtomicInteger operationCalls = new AtomicInteger();

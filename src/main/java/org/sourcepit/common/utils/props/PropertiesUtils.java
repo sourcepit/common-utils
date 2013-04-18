@@ -6,8 +6,8 @@
 
 package org.sourcepit.common.utils.props;
 
-import static org.sourcepit.common.utils.io.IOResources.buffOut;
-import static org.sourcepit.common.utils.io.IOResources.fileOut;
+import static org.sourcepit.common.utils.io.IO.buffOut;
+import static org.sourcepit.common.utils.io.IO.fileOut;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -31,7 +31,7 @@ import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.sourcepit.common.utils.io.IOOperation;
-import org.sourcepit.common.utils.io.IOResource;
+import org.sourcepit.common.utils.io.IOFactory;
 import org.sourcepit.common.utils.lang.Exceptions;
 
 public final class PropertiesUtils
@@ -77,11 +77,11 @@ public final class PropertiesUtils
    @SuppressWarnings("rawtypes")
    public static void store(final Map/* <String, String> */properties, File file)
    {
-      store(properties, (IOResource<? extends OutputStream>) buffOut(fileOut(file, true)));
+      store(properties, (IOFactory<? extends OutputStream>) buffOut(fileOut(file, true)));
    }
 
    @SuppressWarnings("rawtypes")
-   public static void store(final Map/* <String, String> */properties, IOResource<? extends OutputStream> resource)
+   public static void store(final Map/* <String, String> */properties, IOFactory<? extends OutputStream> resource)
    {
       new IOOperation<OutputStream>(resource)
       {

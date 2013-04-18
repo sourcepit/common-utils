@@ -4,20 +4,24 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io;
+package org.sourcepit.common.utils.io.factories.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.JarInputStream;
 
+import org.sourcepit.common.utils.io.IOFactory;
+import org.sourcepit.common.utils.io.factories.JarInputStreamFactory;
+
+
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class JarInputStreamResource implements IOResource<JarInputStream>
+public class JarInputStreamFactoryImpl implements JarInputStreamFactory
 {
-   private final IOResource<? extends InputStream> resource;
+   private final IOFactory<? extends InputStream> resource;
 
-   public JarInputStreamResource(IOResource<? extends InputStream> resource)
+   public JarInputStreamFactoryImpl(IOFactory<? extends InputStream> resource)
    {
       this.resource = resource;
    }

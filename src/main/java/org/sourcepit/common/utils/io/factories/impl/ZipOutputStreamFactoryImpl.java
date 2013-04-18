@@ -4,20 +4,24 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io;
+package org.sourcepit.common.utils.io.factories.impl;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.zip.ZipOutputStream;
 
+import org.sourcepit.common.utils.io.IOFactory;
+import org.sourcepit.common.utils.io.factories.ZipOutputStreamFactory;
+
+
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class ZipOutputStreamResource implements IOResource<ZipOutputStream>
+public class ZipOutputStreamFactoryImpl implements ZipOutputStreamFactory
 {
-   private final IOResource<? extends OutputStream> resource;
+   private final IOFactory<? extends OutputStream> resource;
 
-   public ZipOutputStreamResource(IOResource<? extends OutputStream> resource)
+   public ZipOutputStreamFactoryImpl(IOFactory<? extends OutputStream> resource)
    {
       this.resource = resource;
    }

@@ -4,7 +4,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io;
+package org.sourcepit.common.utils.io.factories.impl;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,16 +13,19 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.sourcepit.common.utils.io.IOFactory;
+import org.sourcepit.common.utils.io.IO;
+import org.sourcepit.common.utils.io.factories.ZipInputStreamFactory;
 
-public class ZipEntryResource implements IOResource<InputStream>
+public class ZipEntryInputStreamFactoryImpl implements ZipInputStreamFactory
 {
-   private final IOResource<? extends ZipInputStream> resource;
+   private final IOFactory<? extends ZipInputStream> resource;
 
    private final String entryName;
 
-   public ZipEntryResource(IOResource<? extends InputStream> resource, String entryName)
+   public ZipEntryInputStreamFactoryImpl(IOFactory<? extends InputStream> resource, String entryName)
    {
-      this.resource = resource instanceof ZipInputStreamResource ? (ZipInputStreamResource) resource : IOResources
+      this.resource = resource instanceof ZipInputStreamFactoryImpl ? (ZipInputStreamFactory) resource : IO
          .zipIn(resource);
       this.entryName = entryName;
    }

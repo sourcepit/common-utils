@@ -4,17 +4,20 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io;
+package org.sourcepit.common.utils.io.factories.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-public class URLResource implements IOResource<InputStream>
+import org.sourcepit.common.utils.io.factories.InputStreamFactory;
+
+
+public class URLInputStreamFactoryImpl implements InputStreamFactory
 {
    private final URL url;
    
-   public URLResource(URL url)
+   public URLInputStreamFactoryImpl(URL url)
    {
       this.url = url;
    }
