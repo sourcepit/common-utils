@@ -6,10 +6,10 @@
 
 package org.sourcepit.common.utils.io.factories;
 
-import java.util.zip.ZipInputStream;
+import java.util.jar.JarInputStream;
 
 import org.sourcepit.common.utils.io.IOFactory;
 
-public interface JarInputStreamFactory extends IOFactory<ZipInputStream>
+public interface JarInputStreamFactory extends IOFactory<JarInputStream>
 {
 }
