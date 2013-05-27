@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.sourcepit</groupId>
 		<artifactId>srcpit-parent</artifactId>
-		<version>10-SNAPSHOT</version>
+		<version>10</version>
 	</parent>
 	<groupId>org.sourcepit.common</groupId>
 	<artifactId>common-utils</artifactId>
@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>org.sourcepit.common</groupId>
 			<artifactId>common-testing</artifactId>
-			<version>0.1.0-alpha-7</version>
+			<version>0.1.0-alpha-8</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -82,7 +82,7 @@
 						<dependency>
 							<groupId>org.eclipse.tycho</groupId>
 							<artifactId>tycho-compiler-jdt</artifactId>
-							<version>0.16.0</version>
+							<version>0.17.0</version>
 						</dependency>
 					</dependencies>
 				</plugin>
