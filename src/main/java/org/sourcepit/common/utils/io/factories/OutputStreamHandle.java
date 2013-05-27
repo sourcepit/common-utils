@@ -6,10 +6,10 @@
 
 package org.sourcepit.common.utils.io.factories;
 
-import java.util.jar.JarOutputStream;
+import java.io.OutputStream;
 
-import org.sourcepit.common.utils.io.IOFactory;
+import org.sourcepit.common.utils.io.IOHandle;
 
-public interface JarOutputStreamFactory extends IOFactory<JarOutputStream>
+public interface OutputStreamHandle extends IOHandle<OutputStream>
 {
 }

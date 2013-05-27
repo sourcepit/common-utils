@@ -10,18 +10,18 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.sourcepit.common.utils.io.IOFactory;
-import org.sourcepit.common.utils.io.factories.OutputStreamFactory;
+import org.sourcepit.common.utils.io.IOHandle;
+import org.sourcepit.common.utils.io.factories.OutputStreamHandle;
 
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class BufferedOutputStreamFactoryImpl implements OutputStreamFactory
+public class BufferedOutputStreamHandleImpl implements OutputStreamHandle
 {
-   private final IOFactory<? extends OutputStream> resource;
+   private final IOHandle<? extends OutputStream> resource;
 
-   public BufferedOutputStreamFactoryImpl(IOFactory<? extends OutputStream> resource)
+   public BufferedOutputStreamHandleImpl(IOHandle<? extends OutputStream> resource)
    {
       this.resource = resource;
    }

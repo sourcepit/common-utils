@@ -6,10 +6,10 @@
 
 package org.sourcepit.common.utils.io.factories;
 
-import java.io.FileInputStream;
+import java.io.Writer;
 
-import org.sourcepit.common.utils.io.IOFactory;
+import org.sourcepit.common.utils.io.IOHandle;
 
-public interface FileInputStreamFactory extends IOFactory<FileInputStream>
+public interface WriterHandle extends IOHandle<Writer>
 {
 }

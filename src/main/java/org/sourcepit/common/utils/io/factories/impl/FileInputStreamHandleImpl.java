@@ -7,34 +7,34 @@
 package org.sourcepit.common.utils.io.factories.impl;
 
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.sourcepit.common.utils.file.FileUtils;
-import org.sourcepit.common.utils.io.factories.FileOutputStreamFactory;
+import org.sourcepit.common.utils.io.factories.FileInputStreamHandle;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class FileOutputStreamFactoryImpl implements FileOutputStreamFactory
+public class FileInputStreamHandleImpl implements FileInputStreamHandle
 {
    protected final File file;
    protected final boolean createOnDemand;
 
-   public FileOutputStreamFactoryImpl(File file)
+   public FileInputStreamHandleImpl(File file)
    {
-      this(file, true);
+      this(file, false);
    }
 
-   public FileOutputStreamFactoryImpl(File file, boolean createOnDemand)
+   public FileInputStreamHandleImpl(File file, boolean createOnDemand)
    {
       this.file = file;
       this.createOnDemand = createOnDemand;
    }
 
-   public FileOutputStream open() throws IOException
+   public FileInputStream open() throws IOException
    {
-      return FileUtils.openOutputStream(file, createOnDemand);
+      return (FileInputStream) FileUtils.openInputStream(file, createOnDemand);
    }
 
 }

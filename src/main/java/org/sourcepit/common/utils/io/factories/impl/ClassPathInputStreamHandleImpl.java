@@ -10,15 +10,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.sourcepit.common.utils.io.factories.InputStreamFactory;
+import org.sourcepit.common.utils.io.factories.InputStreamHandle;
 
 
-public class ClassPathInputStreamFactoryImpl implements InputStreamFactory
+public class ClassPathInputStreamHandleImpl implements InputStreamHandle
 {
    private ClassLoader classLoader;
    private String name;
 
-   public ClassPathInputStreamFactoryImpl(ClassLoader classLoader, String name)
+   public ClassPathInputStreamHandleImpl(ClassLoader classLoader, String name)
    {
       this.classLoader = classLoader;
       this.name = name;

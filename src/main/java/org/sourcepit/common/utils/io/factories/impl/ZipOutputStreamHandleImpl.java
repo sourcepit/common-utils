@@ -7,27 +7,27 @@
 package org.sourcepit.common.utils.io.factories.impl;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.zip.ZipInputStream;
+import java.io.OutputStream;
+import java.util.zip.ZipOutputStream;
 
-import org.sourcepit.common.utils.io.IOFactory;
-import org.sourcepit.common.utils.io.factories.ZipInputStreamFactory;
+import org.sourcepit.common.utils.io.IOHandle;
+import org.sourcepit.common.utils.io.factories.ZipOutputStreamHandle;
 
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class ZipInputStreamFactoryImpl implements ZipInputStreamFactory
+public class ZipOutputStreamHandleImpl implements ZipOutputStreamHandle
 {
-   private final IOFactory<? extends InputStream> resource;
+   private final IOHandle<? extends OutputStream> resource;
 
-   public ZipInputStreamFactoryImpl(IOFactory<? extends InputStream> resource)
+   public ZipOutputStreamHandleImpl(IOHandle<? extends OutputStream> resource)
    {
       this.resource = resource;
    }
 
-   public ZipInputStream open() throws IOException
+   public ZipOutputStream open() throws IOException
    {
-      return new ZipInputStream(resource.open());
+      return new ZipOutputStream(resource.open());
    }
 }

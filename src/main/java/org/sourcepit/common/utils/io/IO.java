@@ -13,29 +13,29 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-import org.sourcepit.common.utils.io.factories.ByteArrayInputStreamFactory;
-import org.sourcepit.common.utils.io.factories.ByteArrayOutputStreamFactory;
-import org.sourcepit.common.utils.io.factories.FileInputStreamFactory;
-import org.sourcepit.common.utils.io.factories.FileOutputStreamFactory;
-import org.sourcepit.common.utils.io.factories.InputStreamFactory;
-import org.sourcepit.common.utils.io.factories.JarInputStreamFactory;
-import org.sourcepit.common.utils.io.factories.JarOutputStreamFactory;
-import org.sourcepit.common.utils.io.factories.OutputStreamFactory;
-import org.sourcepit.common.utils.io.factories.ZipInputStreamFactory;
-import org.sourcepit.common.utils.io.factories.ZipOutputStreamFactory;
-import org.sourcepit.common.utils.io.factories.impl.BufferedInputStreamFactoryImpl;
-import org.sourcepit.common.utils.io.factories.impl.BufferedOutputStreamFactoryImpl;
-import org.sourcepit.common.utils.io.factories.impl.ByteArrayInputStreamFactoryImpl;
-import org.sourcepit.common.utils.io.factories.impl.ByteArrayOutputStreamFactoryImpl;
-import org.sourcepit.common.utils.io.factories.impl.ClassPathInputStreamFactoryImpl;
-import org.sourcepit.common.utils.io.factories.impl.FileInputStreamFactoryImpl;
-import org.sourcepit.common.utils.io.factories.impl.FileOutputStreamFactoryImpl;
-import org.sourcepit.common.utils.io.factories.impl.JarInputStreamFactoryImpl;
-import org.sourcepit.common.utils.io.factories.impl.JarOutputStreamFactoryImpl;
-import org.sourcepit.common.utils.io.factories.impl.URLInputStreamFactoryImpl;
-import org.sourcepit.common.utils.io.factories.impl.ZipEntryInputStreamFactoryImpl;
-import org.sourcepit.common.utils.io.factories.impl.ZipInputStreamFactoryImpl;
-import org.sourcepit.common.utils.io.factories.impl.ZipOutputStreamFactoryImpl;
+import org.sourcepit.common.utils.io.factories.ByteArrayInputStreamHandle;
+import org.sourcepit.common.utils.io.factories.ByteArrayOutputStreamHandle;
+import org.sourcepit.common.utils.io.factories.FileInputStreamHandle;
+import org.sourcepit.common.utils.io.factories.FileOutputStreamHandle;
+import org.sourcepit.common.utils.io.factories.InputStreamHandle;
+import org.sourcepit.common.utils.io.factories.JarInputStreamHandle;
+import org.sourcepit.common.utils.io.factories.JarOutputStreamHandle;
+import org.sourcepit.common.utils.io.factories.OutputStreamHandle;
+import org.sourcepit.common.utils.io.factories.ZipInputStreamHandle;
+import org.sourcepit.common.utils.io.factories.ZipOutputStreamHandle;
+import org.sourcepit.common.utils.io.factories.impl.BufferedInputStreamHandleImpl;
+import org.sourcepit.common.utils.io.factories.impl.BufferedOutputStreamHandleImpl;
+import org.sourcepit.common.utils.io.factories.impl.ByteArrayInputStreamHandleImpl;
+import org.sourcepit.common.utils.io.factories.impl.ByteArrayOutputStreamHandleImpl;
+import org.sourcepit.common.utils.io.factories.impl.ClassPathInputStreamHandleImpl;
+import org.sourcepit.common.utils.io.factories.impl.FileInputStreamHandleImpl;
+import org.sourcepit.common.utils.io.factories.impl.FileOutputStreamHandleImpl;
+import org.sourcepit.common.utils.io.factories.impl.JarInputStreamHandleImpl;
+import org.sourcepit.common.utils.io.factories.impl.JarOutputStreamHandleImpl;
+import org.sourcepit.common.utils.io.factories.impl.URLInputStreamHandleImpl;
+import org.sourcepit.common.utils.io.factories.impl.ZipEntryInputStreamHandleImpl;
+import org.sourcepit.common.utils.io.factories.impl.ZipInputStreamHandleImpl;
+import org.sourcepit.common.utils.io.factories.impl.ZipOutputStreamHandleImpl;
 import org.sourcepit.common.utils.lang.Exceptions;
 import org.sourcepit.common.utils.lang.PipedException;
 import org.sourcepit.common.utils.lang.ThrowablePipe;
@@ -47,7 +47,7 @@ public class IO
 {
 
    public static <Resource extends Closeable, Content> Content read(Read<Resource, Content> operation,
-      IOFactory<? extends Resource> resource) throws PipedException
+      IOHandle<? extends Resource> resource) throws PipedException
    {
       ThrowablePipe error = null;
       Resource openResource = null;
@@ -68,7 +68,7 @@ public class IO
    }
 
    public static <Resource extends Closeable, Content> void write(Write<Resource, Content> operation,
-      IOFactory<? extends Resource> resource, Content content) throws PipedException
+      IOHandle<? extends Resource> resource, Content content) throws PipedException
    {
       ThrowablePipe error = null;
       Resource openResource = null;
@@ -115,72 +115,72 @@ public class IO
    }
 
 
-   public static FileInputStreamFactory fileIn(String path)
+   public static FileInputStreamHandle fileIn(String path)
    {
       return fileIn(new File(path));
    }
 
-   public static FileInputStreamFactory fileIn(File parent, String path)
+   public static FileInputStreamHandle fileIn(File parent, String path)
    {
       return fileIn(new File(parent, path));
    }
 
-   public static FileInputStreamFactory fileIn(File file)
+   public static FileInputStreamHandle fileIn(File file)
    {
-      return new FileInputStreamFactoryImpl(file);
+      return new FileInputStreamHandleImpl(file);
    }
 
-   public static FileInputStreamFactory fileIn(String path, boolean createOnDemand)
+   public static FileInputStreamHandle fileIn(String path, boolean createOnDemand)
    {
       return fileIn(new File(path), createOnDemand);
    }
 
-   public static FileInputStreamFactory fileIn(File parent, String path, boolean createOnDemand)
+   public static FileInputStreamHandle fileIn(File parent, String path, boolean createOnDemand)
    {
       return fileIn(new File(parent, path), createOnDemand);
    }
 
-   public static FileInputStreamFactory fileIn(File file, boolean createOnDemand)
+   public static FileInputStreamHandle fileIn(File file, boolean createOnDemand)
    {
-      return new FileInputStreamFactoryImpl(file, createOnDemand);
+      return new FileInputStreamHandleImpl(file, createOnDemand);
    }
 
-   public static InputStreamFactory buffIn(IOFactory<? extends InputStream> resource)
+   public static InputStreamHandle buffIn(IOHandle<? extends InputStream> resource)
    {
-      return new BufferedInputStreamFactoryImpl(resource);
+      return new BufferedInputStreamHandleImpl(resource);
    }
 
-   public static ByteArrayInputStreamFactory byteIn(byte[] bytes)
+   public static ByteArrayInputStreamHandle byteIn(byte[] bytes)
    {
-      return new ByteArrayInputStreamFactoryImpl(bytes);
+      return new ByteArrayInputStreamHandleImpl(bytes);
    }
 
-   public static JarInputStreamFactory jarIn(IOFactory<? extends InputStream> resource)
+   public static JarInputStreamHandle jarIn(IOHandle<? extends InputStream> resource)
    {
-      return new JarInputStreamFactoryImpl(resource);
+      return new JarInputStreamHandleImpl(resource);
    }
 
-   public static ZipInputStreamFactory zipIn(IOFactory<? extends InputStream> resource)
+   public static ZipInputStreamHandle zipIn(IOHandle<? extends InputStream> resource)
    {
-      return new ZipInputStreamFactoryImpl(resource);
+      return new ZipInputStreamHandleImpl(resource);
    }
 
-   public static ZipInputStreamFactory zipIn(IOFactory<? extends InputStream> resource, String entryName)
+   public static ZipInputStreamHandle zipIn(IOHandle<? extends InputStream> resource, String entryName)
    {
-      return new ZipEntryInputStreamFactoryImpl(resource, entryName);
+      return new ZipEntryInputStreamHandleImpl(resource, entryName);
    }
 
-   public static InputStreamFactory urlIn(URL url)
+   public static InputStreamHandle urlIn(URL url)
    {
-      return new URLInputStreamFactoryImpl(url);
+      return new URLInputStreamHandleImpl(url);
    }
 
-   public static InputStreamFactory cpIn(ClassLoader classLoader, String name)
+   public static InputStreamHandle cpIn(ClassLoader classLoader, String name)
    {
-      return new ClassPathInputStreamFactoryImpl(classLoader, name);
+      return new ClassPathInputStreamHandleImpl(classLoader, name);
    }
 
-   public static IOFactory<? extends InputStream> osgiIn(File bundleLocation, String entryName)
+   public static IOHandle<? extends InputStream> osgiIn(File bundleLocation, String entryName)
    {
       if (bundleLocation.isDirectory())
       {
@@ -192,58 +192,58 @@ public class IO
       }
    }
 
-   public static FileOutputStreamFactory fileOut(String path)
+   public static FileOutputStreamHandle fileOut(String path)
    {
       return fileOut(new File(path));
    }
 
-   public static FileOutputStreamFactory fileOut(File parent, String path)
+   public static FileOutputStreamHandle fileOut(File parent, String path)
    {
       return fileOut(new File(parent, path));
    }
 
-   public static FileOutputStreamFactory fileOut(File file)
+   public static FileOutputStreamHandle fileOut(File file)
    {
-      return new FileOutputStreamFactoryImpl(file);
+      return new FileOutputStreamHandleImpl(file);
    }
 
-   public static FileOutputStreamFactory fileOut(String path, boolean createOnDemand)
+   public static FileOutputStreamHandle fileOut(String path, boolean createOnDemand)
    {
       return fileOut(new File(path), createOnDemand);
    }
 
-   public static FileOutputStreamFactory fileOut(File parent, String path, boolean createOnDemand)
+   public static FileOutputStreamHandle fileOut(File parent, String path, boolean createOnDemand)
    {
       return fileOut(new File(parent, path), createOnDemand);
    }
 
-   public static FileOutputStreamFactory fileOut(File file, boolean createOnDemand)
+   public static FileOutputStreamHandle fileOut(File file, boolean createOnDemand)
    {
-      return new FileOutputStreamFactoryImpl(file, createOnDemand);
+      return new FileOutputStreamHandleImpl(file, createOnDemand);
    }
 
-   public static OutputStreamFactory buffOut(IOFactory<? extends OutputStream> resource)
+   public static OutputStreamHandle buffOut(IOHandle<? extends OutputStream> resource)
    {
-      return new BufferedOutputStreamFactoryImpl(resource);
+      return new BufferedOutputStreamHandleImpl(resource);
    }
 
-   public static ByteArrayOutputStreamFactory byteOut()
+   public static ByteArrayOutputStreamHandle byteOut()
    {
-      return new ByteArrayOutputStreamFactoryImpl();
+      return new ByteArrayOutputStreamHandleImpl();
    }
 
-   public static ByteArrayOutputStreamFactory byteOut(int size)
+   public static ByteArrayOutputStreamHandle byteOut(int size)
    {
-      return new ByteArrayOutputStreamFactoryImpl(size);
+      return new ByteArrayOutputStreamHandleImpl(size);
    }
 
-   public static JarOutputStreamFactory jarOut(IOFactory<? extends OutputStream> resource)
+   public static JarOutputStreamHandle jarOut(IOHandle<? extends OutputStream> resource)
    {
-      return new JarOutputStreamFactoryImpl(resource);
+      return new JarOutputStreamHandleImpl(resource);
    }
 
-   public static ZipOutputStreamFactory zipOut(IOFactory<? extends OutputStream> resource)
+   public static ZipOutputStreamHandle zipOut(IOHandle<? extends OutputStream> resource)
    {
-      return new ZipOutputStreamFactoryImpl(resource);
+      return new ZipOutputStreamHandleImpl(resource);
    }
 }

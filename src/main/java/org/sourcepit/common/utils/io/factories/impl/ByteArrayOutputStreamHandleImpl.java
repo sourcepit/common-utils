@@ -9,19 +9,19 @@ package org.sourcepit.common.utils.io.factories.impl;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.sourcepit.common.utils.io.factories.ByteArrayOutputStreamFactory;
+import org.sourcepit.common.utils.io.factories.ByteArrayOutputStreamHandle;
 
 
-public class ByteArrayOutputStreamFactoryImpl implements ByteArrayOutputStreamFactory
+public class ByteArrayOutputStreamHandleImpl implements ByteArrayOutputStreamHandle
 {
    private final int size;
    
-   public ByteArrayOutputStreamFactoryImpl()
+   public ByteArrayOutputStreamHandleImpl()
    {
       this(32);
    }
 
-   public ByteArrayOutputStreamFactoryImpl(int size)
+   public ByteArrayOutputStreamHandleImpl(int size)
    {
       this.size = size;
    }

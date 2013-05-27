@@ -6,10 +6,10 @@
 
 package org.sourcepit.common.utils.io.factories;
 
-import java.io.Reader;
+import java.util.jar.JarInputStream;
 
-import org.sourcepit.common.utils.io.IOFactory;
+import org.sourcepit.common.utils.io.IOHandle;
 
-public interface ReaderFactory extends IOFactory<Reader>
+public interface JarInputStreamHandle extends IOHandle<JarInputStream>
 {
 }

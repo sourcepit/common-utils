@@ -11,9 +11,9 @@ import java.io.IOException;
 
 public abstract class DualIOOperation<I extends Closeable, O extends Closeable> extends IOOperation<I> implements Runnable
 {
-   private final IOFactory<? extends O> outputResource;
+   private final IOHandle<? extends O> outputResource;
 
-   public DualIOOperation(IOFactory<? extends I> inputResource, IOFactory<? extends O> outputResource)
+   public DualIOOperation(IOHandle<? extends I> inputResource, IOHandle<? extends O> outputResource)
    {
       super(inputResource);
       this.outputResource = outputResource;

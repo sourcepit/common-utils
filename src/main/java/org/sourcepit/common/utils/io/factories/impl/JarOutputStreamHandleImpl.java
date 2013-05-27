@@ -7,27 +7,27 @@
 package org.sourcepit.common.utils.io.factories.impl;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.jar.JarInputStream;
+import java.io.OutputStream;
+import java.util.jar.JarOutputStream;
 
-import org.sourcepit.common.utils.io.IOFactory;
-import org.sourcepit.common.utils.io.factories.JarInputStreamFactory;
+import org.sourcepit.common.utils.io.IOHandle;
+import org.sourcepit.common.utils.io.factories.JarOutputStreamHandle;
 
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class JarInputStreamFactoryImpl implements JarInputStreamFactory
+public class JarOutputStreamHandleImpl implements JarOutputStreamHandle
 {
-   private final IOFactory<? extends InputStream> resource;
+   private final IOHandle<? extends OutputStream> resource;
 
-   public JarInputStreamFactoryImpl(IOFactory<? extends InputStream> resource)
+   public JarOutputStreamHandleImpl(IOHandle<? extends OutputStream> resource)
    {
       this.resource = resource;
    }
 
-   public JarInputStream open() throws IOException
+   public JarOutputStream open() throws IOException
    {
-      return new JarInputStream(resource.open());
+      return new JarOutputStream(resource.open());
    }
 }

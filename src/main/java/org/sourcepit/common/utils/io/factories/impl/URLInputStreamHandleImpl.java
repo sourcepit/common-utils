@@ -10,14 +10,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.sourcepit.common.utils.io.factories.InputStreamFactory;
+import org.sourcepit.common.utils.io.factories.InputStreamHandle;
 
 
-public class URLInputStreamFactoryImpl implements InputStreamFactory
+public class URLInputStreamHandleImpl implements InputStreamHandle
 {
    private final URL url;
    
-   public URLInputStreamFactoryImpl(URL url)
+   public URLInputStreamHandleImpl(URL url)
    {
       this.url = url;
    }

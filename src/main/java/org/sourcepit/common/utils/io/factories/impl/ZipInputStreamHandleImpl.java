@@ -6,29 +6,28 @@
 
 package org.sourcepit.common.utils.io.factories.impl;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.zip.ZipInputStream;
 
-import org.sourcepit.common.utils.io.IOFactory;
-import org.sourcepit.common.utils.io.factories.InputStreamFactory;
+import org.sourcepit.common.utils.io.IOHandle;
+import org.sourcepit.common.utils.io.factories.ZipInputStreamHandle;
 
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class BufferedInputStreamFactoryImpl implements InputStreamFactory
+public class ZipInputStreamHandleImpl implements ZipInputStreamHandle
 {
-   private final IOFactory<? extends InputStream> resource;
+   private final IOHandle<? extends InputStream> resource;
 
-   public BufferedInputStreamFactoryImpl(IOFactory<? extends InputStream> resource)
+   public ZipInputStreamHandleImpl(IOHandle<? extends InputStream> resource)
    {
       this.resource = resource;
    }
 
-   public BufferedInputStream open() throws IOException
+   public ZipInputStream open() throws IOException
    {
-      return new BufferedInputStream(resource.open());
+      return new ZipInputStream(resource.open());
    }
-
 }

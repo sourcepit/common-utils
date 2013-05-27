@@ -9,14 +9,14 @@ package org.sourcepit.common.utils.io.factories.impl;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import org.sourcepit.common.utils.io.factories.ByteArrayInputStreamFactory;
+import org.sourcepit.common.utils.io.factories.ByteArrayInputStreamHandle;
 
 
-public class ByteArrayInputStreamFactoryImpl implements ByteArrayInputStreamFactory
+public class ByteArrayInputStreamHandleImpl implements ByteArrayInputStreamHandle
 {
    private final byte[] bytes;
 
-   public ByteArrayInputStreamFactoryImpl(byte[] bytes)
+   public ByteArrayInputStreamHandleImpl(byte[] bytes)
    {
       this.bytes = bytes;
    }

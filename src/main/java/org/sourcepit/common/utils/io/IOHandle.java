@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public interface IOFactory<R extends Closeable>
+public interface IOHandle<R extends Closeable>
 {
    R open() throws IOException;
 }

@@ -13,19 +13,19 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.sourcepit.common.utils.io.IOFactory;
+import org.sourcepit.common.utils.io.IOHandle;
 import org.sourcepit.common.utils.io.IO;
-import org.sourcepit.common.utils.io.factories.ZipInputStreamFactory;
+import org.sourcepit.common.utils.io.factories.ZipInputStreamHandle;
 
-public class ZipEntryInputStreamFactoryImpl implements ZipInputStreamFactory
+public class ZipEntryInputStreamHandleImpl implements ZipInputStreamHandle
 {
-   private final IOFactory<? extends ZipInputStream> resource;
+   private final IOHandle<? extends ZipInputStream> resource;
 
    private final String entryName;
 
-   public ZipEntryInputStreamFactoryImpl(IOFactory<? extends InputStream> resource, String entryName)
+   public ZipEntryInputStreamHandleImpl(IOHandle<? extends InputStream> resource, String entryName)
    {
-      this.resource = resource instanceof ZipInputStreamFactoryImpl ? (ZipInputStreamFactory) resource : IO
+      this.resource = resource instanceof ZipInputStreamHandleImpl ? (ZipInputStreamHandle) resource : IO
          .zipIn(resource);
       this.entryName = entryName;
    }
