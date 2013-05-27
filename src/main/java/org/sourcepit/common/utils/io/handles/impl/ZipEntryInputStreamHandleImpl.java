@@ -4,7 +4,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io.factories.impl;
+package org.sourcepit.common.utils.io.handles.impl;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.util.zip.ZipInputStream;
 import org.apache.commons.io.IOUtils;
 import org.sourcepit.common.utils.io.IOHandle;
 import org.sourcepit.common.utils.io.IO;
-import org.sourcepit.common.utils.io.factories.ZipInputStreamHandle;
+import org.sourcepit.common.utils.io.handles.ZipInputStreamHandle;
 
 public class ZipEntryInputStreamHandleImpl implements ZipInputStreamHandle
 {

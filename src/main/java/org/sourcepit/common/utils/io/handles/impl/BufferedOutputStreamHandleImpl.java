@@ -4,30 +4,31 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io.factories.impl;
+package org.sourcepit.common.utils.io.handles.impl;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.jar.JarOutputStream;
 
 import org.sourcepit.common.utils.io.IOHandle;
-import org.sourcepit.common.utils.io.factories.JarOutputStreamHandle;
+import org.sourcepit.common.utils.io.handles.OutputStreamHandle;
 
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class JarOutputStreamHandleImpl implements JarOutputStreamHandle
+public class BufferedOutputStreamHandleImpl implements OutputStreamHandle
 {
    private final IOHandle<? extends OutputStream> resource;
 
-   public JarOutputStreamHandleImpl(IOHandle<? extends OutputStream> resource)
+   public BufferedOutputStreamHandleImpl(IOHandle<? extends OutputStream> resource)
    {
       this.resource = resource;
    }
 
-   public JarOutputStream open() throws IOException
+   public BufferedOutputStream open() throws IOException
    {
-      return new JarOutputStream(resource.open());
+      return new BufferedOutputStream(resource.open());
    }
+
 }

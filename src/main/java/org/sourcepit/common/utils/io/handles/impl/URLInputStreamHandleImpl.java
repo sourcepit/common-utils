@@ -4,13 +4,13 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io.factories.impl;
+package org.sourcepit.common.utils.io.handles.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.sourcepit.common.utils.io.factories.InputStreamHandle;
+import org.sourcepit.common.utils.io.handles.InputStreamHandle;
 
 
 public class URLInputStreamHandleImpl implements InputStreamHandle

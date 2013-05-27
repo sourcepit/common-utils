@@ -4,7 +4,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io.factories;
+package org.sourcepit.common.utils.io.handles;
 
 import java.util.jar.JarInputStream;
 

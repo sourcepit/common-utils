@@ -4,12 +4,12 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io.factories;
+package org.sourcepit.common.utils.io.handles;
 
-import java.io.Reader;
+import java.io.ByteArrayOutputStream;
 
 import org.sourcepit.common.utils.io.IOHandle;
 
-public interface ReaderHandle extends IOHandle<Reader>
+public interface ByteArrayOutputStreamHandle extends IOHandle<ByteArrayOutputStream>
 {
 }

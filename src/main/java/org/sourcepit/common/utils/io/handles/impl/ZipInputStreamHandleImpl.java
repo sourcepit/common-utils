@@ -4,30 +4,30 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io.factories.impl;
+package org.sourcepit.common.utils.io.handles.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.jar.JarInputStream;
+import java.util.zip.ZipInputStream;
 
 import org.sourcepit.common.utils.io.IOHandle;
-import org.sourcepit.common.utils.io.factories.JarInputStreamHandle;
+import org.sourcepit.common.utils.io.handles.ZipInputStreamHandle;
 
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
  */
-public class JarInputStreamHandleImpl implements JarInputStreamHandle
+public class ZipInputStreamHandleImpl implements ZipInputStreamHandle
 {
    private final IOHandle<? extends InputStream> resource;
 
-   public JarInputStreamHandleImpl(IOHandle<? extends InputStream> resource)
+   public ZipInputStreamHandleImpl(IOHandle<? extends InputStream> resource)
    {
       this.resource = resource;
    }
 
-   public JarInputStream open() throws IOException
+   public ZipInputStream open() throws IOException
    {
-      return new JarInputStream(resource.open());
+      return new ZipInputStream(resource.open());
    }
 }

@@ -4,12 +4,12 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io.factories.impl;
+package org.sourcepit.common.utils.io.handles.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import org.sourcepit.common.utils.io.factories.ByteArrayInputStreamHandle;
+import org.sourcepit.common.utils.io.handles.ByteArrayInputStreamHandle;
 
 
 public class ByteArrayInputStreamHandleImpl implements ByteArrayInputStreamHandle

@@ -4,12 +4,12 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.io.factories;
+package org.sourcepit.common.utils.io.handles;
 
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
 
 import org.sourcepit.common.utils.io.IOHandle;
 
-public interface FileOutputStreamHandle extends IOHandle<FileOutputStream>
+public interface FileInputStreamHandle extends IOHandle<FileInputStream>
 {
 }
