@@ -16,6 +16,7 @@ import org.junit.Test;
 
 public class FilteredIterableTest
 {
+   @Test
    public void testNull()
    {
       List<Object> input = new ArrayList<Object>();
