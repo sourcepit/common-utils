@@ -2,11 +2,14 @@
  * Copyright (C) 2013 Bosch Software Innovations GmbH. All rights reserved.
  */
 
-package org.sourcepit.common.utils.content;
+package org.sourcepit.common.utils.content.impl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
+
+import org.sourcepit.common.utils.content.EncodingDeclarationParser;
+import org.sourcepit.common.utils.props.PropertiesSource;
 
 public class CssEncodingDeclarationParser extends AbstractEncodingDeclarationParser
    implements
@@ -15,13 +18,13 @@ public class CssEncodingDeclarationParser extends AbstractEncodingDeclarationPar
    private final char[] prefix = "@charset \"".toCharArray();
 
    @Override
-   protected int getBufferSize()
+   protected int getBufferSize(PropertiesSource options)
    {
       return 200;
    }
 
    @Override
-   protected String parse(BufferedReader reader) throws IOException
+   protected String parse(BufferedReader reader, PropertiesSource options) throws IOException
    {
       final char[] cbuf = new char[10];
       int length = reader.read(cbuf);

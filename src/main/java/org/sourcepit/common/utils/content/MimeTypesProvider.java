@@ -9,11 +9,13 @@ package org.sourcepit.common.utils.content;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.sourcepit.common.utils.props.PropertiesSource;
+
 public interface MimeTypesProvider
 {
-   String forFileName(String fileName);
+   String forFileName(String fileName, PropertiesSource options);
 
-   String forContent(InputStream content) throws IOException;
+   String forContent(InputStream content, PropertiesSource options) throws IOException;
 
-   String getBaseType(String mimeType);
+   String getBaseType(String mimeType, PropertiesSource options);
 }

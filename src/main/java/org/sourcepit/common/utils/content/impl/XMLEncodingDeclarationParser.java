@@ -4,18 +4,20 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.content;
+package org.sourcepit.common.utils.content.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.io.IOUtils;
+import org.sourcepit.common.utils.content.EncodingDeclarationParser;
+import org.sourcepit.common.utils.props.PropertiesSource;
 
 public class XMLEncodingDeclarationParser implements EncodingDeclarationParser
 {
    @Override
-   public String parse(InputStream content) throws IOException
+   public String parse(InputStream content, PropertiesSource options) throws IOException
    {
       return getXMLEncoding(read(content, 200));
    }

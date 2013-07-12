@@ -4,7 +4,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.content;
+package org.sourcepit.common.utils.content.impl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,14 +19,14 @@ public class XMLEncodingDeclarationParserTest
    @Test
    public void test() throws IOException
    {
-      String encoding = new XMLEncodingDeclarationParser().parse(new ByteArrayInputStream("".getBytes()));
+      String encoding = new XMLEncodingDeclarationParser().parse(new ByteArrayInputStream("".getBytes()), null);
       assertEquals("UTF-8", encoding);
 
-      encoding = new XMLEncodingDeclarationParser().parse(new ByteArrayInputStream("<doc></doc>".getBytes()));
+      encoding = new XMLEncodingDeclarationParser().parse(new ByteArrayInputStream("<doc></doc>".getBytes()), null);
       assertEquals("UTF-8", encoding);
 
       encoding = new XMLEncodingDeclarationParser().parse(new ByteArrayInputStream(
-         "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<doc></doc>".getBytes("ISO-8859-1")));
+         "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<doc></doc>".getBytes("ISO-8859-1")), null);
       assertEquals("ISO-8859-1", encoding);
    }
 

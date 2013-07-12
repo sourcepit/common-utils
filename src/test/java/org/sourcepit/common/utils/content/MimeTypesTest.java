@@ -17,41 +17,41 @@ public class MimeTypesTest
    @Test
    public void testForFileName()
    {
-      MimeTypes mimeTypes = MimeTypes.getDefault();
+      MimeTypes mimeTypes = MimeTypes.DEFAULT;
 
-      assertNull(mimeTypes.detectByFileName("."));
-      assertNull(mimeTypes.detectByFileName("foo."));
-      assertNull(mimeTypes.detectByFileName(".foo"));
-      
-      assertNull(mimeTypes.detectByFileName(".mf"));
-      assertEquals("application/x-java-manifest", mimeTypes.detectByFileName("manifest.mf").getName());
+      assertNull(mimeTypes.detectByFileName(".", null));
+      assertNull(mimeTypes.detectByFileName("foo.", null));
+      assertNull(mimeTypes.detectByFileName(".foo", null));
 
-      assertEquals("application/xml", mimeTypes.detectByFileName("hans.xml").getName());
-      assertEquals("application/xml", mimeTypes.detectByFileName("*.xml").getName());
-      assertEquals("application/xml", mimeTypes.detectByFileName(".xml").getName());
-      assertNull(mimeTypes.detectByFileName("xml"));
+      assertNull(mimeTypes.detectByFileName(".mf", null));
+      assertEquals("application/x-java-manifest", mimeTypes.detectByFileName("manifest.mf", null).getName());
 
-      assertEquals("application/xml", mimeTypes.detectByFileName("hans.Xml").getName());
-      assertEquals("application/xml", mimeTypes.detectByFileName("*.Xml").getName());
-      assertEquals("application/xml", mimeTypes.detectByFileName(".Xml").getName());
-      assertNull(mimeTypes.detectByFileName("Xml"));
+      assertEquals("application/xml", mimeTypes.detectByFileName("hans.xml", null).getName());
+      assertEquals("application/xml", mimeTypes.detectByFileName("*.xml", null).getName());
+      assertEquals("application/xml", mimeTypes.detectByFileName(".xml", null).getName());
+      assertNull(mimeTypes.detectByFileName("xml", null));
 
-      assertEquals("application/x-java-properties", mimeTypes.detectByFileName("Hans.properties").getName());
-      assertEquals("application/x-java-properties", mimeTypes.detectByFileName("*.properties").getName());
-      assertEquals("application/x-java-properties", mimeTypes.detectByFileName(".properties").getName());
-      assertNull(mimeTypes.detectByFileName("properties"));
+      assertEquals("application/xml", mimeTypes.detectByFileName("hans.Xml", null).getName());
+      assertEquals("application/xml", mimeTypes.detectByFileName("*.Xml", null).getName());
+      assertEquals("application/xml", mimeTypes.detectByFileName(".Xml", null).getName());
+      assertNull(mimeTypes.detectByFileName("Xml", null));
 
-      assertEquals("application/x-java-properties", mimeTypes.detectByFileName("Hans.Properties").getName());
-      assertEquals("application/x-java-properties", mimeTypes.detectByFileName("*.Properties").getName());
-      assertEquals("application/x-java-properties", mimeTypes.detectByFileName(".Properties").getName());
-      assertNull(mimeTypes.detectByFileName("Properties"));
+      assertEquals("application/x-java-properties", mimeTypes.detectByFileName("Hans.properties", null).getName());
+      assertEquals("application/x-java-properties", mimeTypes.detectByFileName("*.properties", null).getName());
+      assertEquals("application/x-java-properties", mimeTypes.detectByFileName(".properties", null).getName());
+      assertNull(mimeTypes.detectByFileName("properties", null));
+
+      assertEquals("application/x-java-properties", mimeTypes.detectByFileName("Hans.Properties", null).getName());
+      assertEquals("application/x-java-properties", mimeTypes.detectByFileName("*.Properties", null).getName());
+      assertEquals("application/x-java-properties", mimeTypes.detectByFileName(".Properties", null).getName());
+      assertNull(mimeTypes.detectByFileName("Properties", null));
    }
 
    @Test
    public void testBaseType()
    {
-      MimeTypes mimeTypes = MimeTypes.getDefault();
-      MimeType mimeType = mimeTypes.detectByFileName("*.xsd");
+      MimeTypes mimeTypes = MimeTypes.DEFAULT;
+      MimeType mimeType = mimeTypes.detectByFileName("*.xsd", null);
       assertEquals(mimeType.getName(), "application/xsd+xml");
 
       MimeType baseType = mimeType.getBaseType();

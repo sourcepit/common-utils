@@ -9,29 +9,20 @@ package org.sourcepit.common.utils.resources;
 import static org.apache.commons.io.FileUtils.forceMkdir;
 import static org.apache.commons.io.IOUtils.closeQuietly;
 import static org.apache.commons.io.IOUtils.copy;
-import static org.junit.Assert.*;
 import static org.sourcepit.common.utils.io.IO.buffIn;
 import static org.sourcepit.common.utils.io.IO.buffOut;
 import static org.sourcepit.common.utils.io.IO.byteIn;
 import static org.sourcepit.common.utils.io.IO.fileOut;
-import static org.sourcepit.common.utils.io.IO.zipOut;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.sourcepit.common.testing.Environment;
 import org.sourcepit.common.testing.Workspace;
-import org.sourcepit.common.utils.io.IO;
-import org.sourcepit.common.utils.io.IOHandle;
-import org.sourcepit.common.utils.io.handles.InputStreamHandle;
-import org.sourcepit.common.utils.io.handles.OutputStreamHandle;
 
 public class ResourceCopierTest
 {

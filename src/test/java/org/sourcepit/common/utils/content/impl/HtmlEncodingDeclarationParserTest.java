@@ -2,14 +2,15 @@
  * Copyright (C) 2013 Bosch Software Innovations GmbH. All rights reserved.
  */
 
-package org.sourcepit.common.utils.content;
+package org.sourcepit.common.utils.content.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.sourcepit.common.utils.content.CssEncodingDeclarationParserTest.asStream;
+import static org.sourcepit.common.utils.content.impl.CssEncodingDeclarationParserTest.asStream;
 
 import java.io.IOException;
 
 import org.junit.Test;
+import org.sourcepit.common.utils.content.EncodingDeclarationParser;
 
 public class HtmlEncodingDeclarationParserTest
 {
@@ -33,8 +34,8 @@ public class HtmlEncodingDeclarationParserTest
       html.append(" </HEAD>");
       html.append(" <BODY>");
 
-      assertEquals("UTF-8", parser.parse(asStream(html.toString(), "UTF-8")));
-      
+      assertEquals("UTF-8", parser.parse(asStream(html.toString(), "UTF-8"), null));
+
       html = new StringBuilder();
       html.append("<!DOCTYPE HTML>");
       html.append("<HTML>");
@@ -48,9 +49,9 @@ public class HtmlEncodingDeclarationParserTest
       html.append("  <META NAME=\"APPLICATION-NAME\" CONTENT=\"Long headed application\">");
       html.append(" </HEAD>");
       html.append(" <BODY>");
-      
-      assertEquals("utf-8", parser.parse(asStream(html.toString(), "UTF-8")));
-      
+
+      assertEquals("utf-8", parser.parse(asStream(html.toString(), "UTF-8"), null));
+
       html = new StringBuilder();
       html.append("<!DOCTYPE HTML>");
       html.append("<HTML>");
@@ -64,8 +65,8 @@ public class HtmlEncodingDeclarationParserTest
       html.append("  <META NAME=\"APPLICATION-NAME\" CONTENT=\"Long headed application\">");
       html.append(" </HEAD>");
       html.append(" <BODY>");
-      
-      assertEquals("8859_1", parser.parse(asStream(html.toString(), "8859_1")));
+
+      assertEquals("8859_1", parser.parse(asStream(html.toString(), "8859_1"), null));
    }
 
 }

@@ -2,21 +2,23 @@
  * Copyright (C) 2013 Bosch Software Innovations GmbH. All rights reserved.
  */
 
-package org.sourcepit.common.utils.content;
+package org.sourcepit.common.utils.content.impl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import org.sourcepit.common.utils.props.PropertiesSource;
+
 public class HtmlEncodingDeclarationParser extends AbstractEncodingDeclarationParser
 {
    @Override
-   protected int getBufferSize()
+   protected int getBufferSize(PropertiesSource options)
    {
       return 512;
    }
 
    @Override
-   protected String parse(BufferedReader reader) throws IOException
+   protected String parse(BufferedReader reader, PropertiesSource options) throws IOException
    {
       String line = reader.readLine();
       while (line != null)

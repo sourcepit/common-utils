@@ -44,7 +44,7 @@ public class DefaultResourceFilter extends AbstractResourceFilter
    protected ContentType getContentType(Resource resource, InputStream content) throws IOException
    {
       final String fileName = resource.getPath().getLastSegment();
-      final ContentType contentType = contentTypes.detect(fileName, content, targetEncoding);
+      final ContentType contentType = contentTypes.detect(fileName, content, targetEncoding, properties);
       return contentType == null || contentType.getEncoding() == null ? null : contentType;
    }
 

@@ -13,6 +13,6 @@ public abstract class AbstractAdapterFactory
    {
       return Adapters.adapt(this, adaptable, adapterType);
    }
-   
+
    protected abstract <A> A newAdapter(Object adaptable, Class<A> adapterType);
 }

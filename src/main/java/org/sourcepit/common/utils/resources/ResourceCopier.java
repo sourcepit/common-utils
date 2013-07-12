@@ -37,7 +37,7 @@ public class ResourceCopier
          closeQuietly(dest);
       }
    }
-   
+
    protected boolean doCopy(Resource resource)
    {
       return true;

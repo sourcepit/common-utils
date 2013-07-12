@@ -4,13 +4,18 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-package org.sourcepit.common.utils.content;
+package org.sourcepit.common.utils.content.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.sourcepit.common.utils.content.EncodingDeclarationParser;
+import org.sourcepit.common.utils.content.EncodingProvider;
+import org.sourcepit.common.utils.content.MimeType;
+import org.sourcepit.common.utils.props.PropertiesSource;
 
 public class MimeTypeEncodingProvider implements EncodingProvider
 {
@@ -59,7 +64,7 @@ public class MimeTypeEncodingProvider implements EncodingProvider
       {
          try
          {
-            clazz = (Class<EncodingDeclarationParser>) Encodings.class.getClassLoader().loadClass(name);
+            clazz = (Class<EncodingDeclarationParser>) EncodingsImpl.class.getClassLoader().loadClass(name);
          }
          catch (ClassNotFoundException e)
          {
@@ -92,7 +97,7 @@ public class MimeTypeEncodingProvider implements EncodingProvider
    }
 
    @Override
-   public String getDefaultEncoding(MimeType mimeType, String fileName, String systemEncoding)
+   public String getDefaultEncoding(MimeType mimeType, String fileName, String systemEncoding, PropertiesSource options)
    {
       String encoding = null;
       MimeType current = mimeType;
@@ -109,13 +114,14 @@ public class MimeTypeEncodingProvider implements EncodingProvider
    }
 
    @Override
-   public String getDeclaredEncoding(MimeType mimeType, String fileName)
+   public String getDeclaredEncoding(MimeType mimeType, String fileName, PropertiesSource options)
    {
       return null;
    }
 
    @Override
-   public String getDeclaredEncoding(MimeType mimeType, InputStream content) throws IOException
+   public String getDeclaredEncoding(MimeType mimeType, InputStream content, PropertiesSource options)
+      throws IOException
    {
       EncodingDeclarationParser parser = null;
       MimeType current = mimeType;
@@ -128,7 +134,7 @@ public class MimeTypeEncodingProvider implements EncodingProvider
          }
          current = current.getBaseType();
       }
-      return parser == null ? null : parser.parse(content);
+      return parser == null ? null : parser.parse(content, options);
    }
 
 }

@@ -20,9 +20,9 @@ public class ContentTypesTest
    @Test
    public void testJsonUtf32() throws IOException
    {
-      final ContentTypes contentTypes = ContentTypes.getDefault();
+      final ContentTypes contentTypes = ContentTypes.DEFAULT;
       InputStream content = new BufferedInputStream(new ByteArrayInputStream("ü".getBytes("UTF-32LE")));
-      ContentType contentType = contentTypes.detect("*.json", content, "ISO-8859-1");
+      ContentType contentType = contentTypes.detect("*.json", content, "ISO-8859-1", null);
       assertNotNull(contentType);
       assertEquals("UTF-32LE", contentType.getEncoding());
    }

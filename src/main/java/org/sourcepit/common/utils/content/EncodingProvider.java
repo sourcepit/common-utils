@@ -9,12 +9,14 @@ package org.sourcepit.common.utils.content;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.sourcepit.common.utils.props.PropertiesSource;
+
 
 public interface EncodingProvider
 {
-   String getDefaultEncoding(MimeType mimeType, String fileName, String targetEncoding);
+   String getDefaultEncoding(MimeType mimeType, String fileName, String targetEncoding, PropertiesSource options);
 
-   String getDeclaredEncoding(MimeType mimeType, String fileName);
+   String getDeclaredEncoding(MimeType mimeType, String fileName, PropertiesSource options);
 
-   String getDeclaredEncoding(MimeType mimeType, InputStream content) throws IOException;
+   String getDeclaredEncoding(MimeType mimeType, InputStream content, PropertiesSource options) throws IOException;
 }

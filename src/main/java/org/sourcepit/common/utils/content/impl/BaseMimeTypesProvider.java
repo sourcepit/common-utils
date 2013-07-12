@@ -3,7 +3,8 @@
  * materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
-package org.sourcepit.common.utils.content;
+
+package org.sourcepit.common.utils.content.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.sourcepit.common.utils.content.MimeTypesProvider;
 import org.sourcepit.common.utils.path.PathMatcher;
+import org.sourcepit.common.utils.props.PropertiesSource;
 
 public class BaseMimeTypesProvider implements MimeTypesProvider
 {
@@ -30,19 +33,19 @@ public class BaseMimeTypesProvider implements MimeTypesProvider
    }
 
    @Override
-   public String forFileName(String fileName)
+   public String forFileName(String fileName, PropertiesSource options)
    {
       return null;
    }
 
    @Override
-   public String forContent(InputStream content) throws IOException
+   public String forContent(InputStream content, PropertiesSource options) throws IOException
    {
       return null;
    }
 
    @Override
-   public String getBaseType(String mimeType)
+   public String getBaseType(String mimeType, PropertiesSource options)
    {
       for (Entry<PathMatcher, String> entry : matcherToParent.entrySet())
       {

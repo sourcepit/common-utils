@@ -9,7 +9,9 @@ package org.sourcepit.common.utils.content;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.sourcepit.common.utils.props.PropertiesSource;
+
 public interface EncodingDeclarationParser
 {
-   String parse(InputStream content) throws IOException;
+   String parse(InputStream content, PropertiesSource options) throws IOException;
 }

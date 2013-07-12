@@ -9,7 +9,9 @@ package org.sourcepit.common.utils.io;
 import java.io.Closeable;
 import java.io.IOException;
 
-public abstract class DualIOOperation<I extends Closeable, O extends Closeable> extends IOOperation<I> implements Runnable
+public abstract class DualIOOperation<I extends Closeable, O extends Closeable> extends IOOperation<I>
+   implements
+      Runnable
 {
    private final IOHandle<? extends O> outputResource;
 

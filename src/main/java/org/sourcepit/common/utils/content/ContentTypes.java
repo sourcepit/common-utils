@@ -9,45 +9,14 @@ package org.sourcepit.common.utils.content;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ContentTypes
+import org.sourcepit.common.utils.content.impl.ContentTypesImpl;
+import org.sourcepit.common.utils.props.PropertiesSource;
+
+
+public interface ContentTypes
 {
-   private static class Instance
-   {
-      static final ContentTypes DEFAULT;
-      static
-      {
-         DEFAULT = new ContentTypes(MimeTypes.getDefault(), Encodings.getDefault());
-      }
-   }
+   ContentTypes DEFAULT = ContentTypesImpl.getDefault();
 
-   public static ContentTypes getDefault()
-   {
-      return Instance.DEFAULT;
-   }
-
-   private final MimeTypes mimeTypes;
-
-   private final Encodings encodings;
-
-   public ContentTypes(MimeTypes mimeTypes, Encodings encodings)
-   {
-      this.mimeTypes = mimeTypes;
-      this.encodings = encodings;
-   }
-
-   public ContentType detect(String fileName, InputStream content, String targetEncoding) throws IOException
-   {
-      final MimeType mimeType = mimeTypes.detect(fileName, content);
-      if (mimeType != null && isSupported(mimeType))
-      {
-         final String encoding = encodings.detect(mimeType, fileName, content, targetEncoding);
-         return new ContentType(mimeType, encoding);
-      }
-      return null;
-   }
-
-   private boolean isSupported(MimeType mimeType)
-   {
-      return true;
-   }
+   ContentType detect(String fileName, InputStream content, String targetEncoding, PropertiesSource options)
+      throws IOException;
 }
