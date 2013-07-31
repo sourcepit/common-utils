@@ -51,5 +51,15 @@ public final class FileUtils
          }
       }
    }
+   
+   public static boolean isParentOf(File dir, File file)
+   {
+      final File parent = file.getParentFile();
+      if (dir.equals(parent))
+      {
+         return true;
+      }
+      return parent == null ? false : isParentOf(dir, parent);
+   }
 
 }
