@@ -8,6 +8,7 @@ package org.sourcepit.common.utils.props;
 
 import static org.sourcepit.common.utils.io.IO.buffOut;
 import static org.sourcepit.common.utils.io.IO.fileOut;
+import static org.sourcepit.common.utils.path.PathMatcher.escRegEx;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,6 +23,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Map;
@@ -30,8 +32,8 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
-import org.sourcepit.common.utils.io.IOOperation;
 import org.sourcepit.common.utils.io.IOHandle;
+import org.sourcepit.common.utils.io.IOOperation;
 import org.sourcepit.common.utils.lang.Exceptions;
 
 public final class PropertiesUtils
@@ -415,5 +417,21 @@ public final class PropertiesUtils
    public static void setInt(Map<String, String> map, String key, int value)
    {
       map.put(key, Integer.toString(value));
+   }
+
+   public static void split(Collection<String> dest, String values, String separator, boolean trim,
+      boolean omitEmptyStrings)
+   {
+      for (String value : values.split(escRegEx(separator)))
+      {
+         if (trim)
+         {
+            value = value.trim();
+         }
+         if (!omitEmptyStrings || value.length() > 0)
+         {
+            dest.add(value);
+         }
+      }
    }
 }
