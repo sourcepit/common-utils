@@ -7,6 +7,7 @@
 package org.sourcepit.common.utils.file;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -51,7 +52,7 @@ public final class FileUtils
          }
       }
    }
-   
+
    public static boolean isParentOf(File dir, File file)
    {
       final File parent = file.getParentFile();
@@ -60,6 +61,46 @@ public final class FileUtils
          return true;
       }
       return parent == null ? false : isParentOf(dir, parent);
+   }
+
+   @SuppressWarnings("unchecked")
+   public static <E extends Exception> void listFiles(File file, AbstractFileFilter<E> fileFilter) throws E
+   {
+      try
+      {
+         file.listFiles(fileFilter);
+      }
+      catch (ExceptionWrapper e)
+      {
+         throw (E) e.getCause();
+      }
+   }
+
+   public abstract static class AbstractFileFilter<E extends Exception> implements FileFilter
+   {
+      @Override
+      public final boolean accept(File file)
+      {
+         try
+         {
+            return acceptFile(file);
+         }
+         catch (Exception e)
+         {
+            throw new ExceptionWrapper(e);
+         }
+      }
+      protected abstract boolean acceptFile(File file) throws E;
+   }
+
+   private static class ExceptionWrapper extends RuntimeException
+   {
+      private static final long serialVersionUID = 1L;
+
+      public ExceptionWrapper(Exception e)
+      {
+         super(e);
+      }
    }
 
 }
