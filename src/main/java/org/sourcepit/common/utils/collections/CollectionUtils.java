@@ -7,6 +7,7 @@
 package org.sourcepit.common.utils.collections;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
@@ -49,6 +50,36 @@ public final class CollectionUtils
          {
             dest.add((T) element);
          }
+      }
+   }
+
+   public static <T, IterableException extends Exception, FunctorException extends Exception> void foreach(
+      Iterable2<T, IterableException> iterable, Functor<T, FunctorException> functor) throws IterableException,
+      FunctorException
+   {
+      final Iterator2<T, IterableException> iterator = iterable.iterator();
+      while (iterator.hasNext())
+      {
+         functor.apply(iterator.next());
+      }
+   }
+
+   public static <T, FunctorException extends Exception> void foreach(Iterable<T> iterable,
+      Functor<T, FunctorException> functor) throws FunctorException
+   {
+      final Iterator<T> iterator = iterable.iterator();
+      while (iterator.hasNext())
+      {
+         functor.apply(iterator.next());
+      }
+   }
+
+   public static <T, FunctorException extends Exception> void foreach(T[] iterable, Functor<T, FunctorException> functor)
+      throws FunctorException
+   {
+      for (T value : iterable)
+      {
+         functor.apply(value);
       }
    }
 }
