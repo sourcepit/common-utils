@@ -6,7 +6,7 @@
 		<version>14</version>
 	</parent>
 	<groupId>org.sourcepit.common</groupId>
-	<artifactId>common-utils</artifactId>
+	<artifactId>org.sourcepit.common.utils</artifactId>
 	<version>0.13.0-SNAPSHOT</version>
 
 	<scm>
@@ -127,7 +127,6 @@
 						</goals>
 						<configuration>
 							<pde>true</pde>
-							<symbolicName>org.sourcepit.common.utils</symbolicName>
 						</configuration>
 					</execution>
 				</executions>
