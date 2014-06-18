@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.sourcepit</groupId>
 		<artifactId>srcpit-parent</artifactId>
-		<version>12</version>
+		<version>14</version>
 	</parent>
 	<groupId>org.sourcepit.common</groupId>
 	<artifactId>common-utils</artifactId>
@@ -97,9 +97,9 @@
 							<pluginExecutions>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>org.sourcepit.tools</groupId>
-										<artifactId>osgify-maven-plugin</artifactId>
-										<versionRange>[0.17.0,)</versionRange>
+										<groupId>org.sourcepit.osgifier</groupId>
+										<artifactId>osgifier-maven-plugin</artifactId>
+										<versionRange>[0,)</versionRange>
 										<goals>
 											<goal>generate-manifest</goal>
 										</goals>
@@ -116,9 +116,9 @@
 		</pluginManagement>
 		<plugins>
 			<plugin>
-				<groupId>org.sourcepit.tools</groupId>
-				<artifactId>osgify-maven-plugin</artifactId>
-				<version>0.18.0</version>
+				<groupId>org.sourcepit.osgifier</groupId>
+				<artifactId>osgifier-maven-plugin</artifactId>
+				<version>0.19.0-preview-16</version>
 				<executions>
 					<execution>
 						<goals>
@@ -128,13 +128,6 @@
 						<configuration>
 							<pde>true</pde>
 							<symbolicName>org.sourcepit.common.utils</symbolicName>
-							<options>
-								<excludedExecutionEnvironments>
-									JavaSE/compact1-1.8,
-									JavaSE/compact2-1.8,
-									JavaSE/compact3-1.8
-								</excludedExecutionEnvironments>
-							</options>
 						</configuration>
 					</execution>
 				</executions>
