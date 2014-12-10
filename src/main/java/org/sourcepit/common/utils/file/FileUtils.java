@@ -19,8 +19,11 @@ package org.sourcepit.common.utils.file;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import org.apache.commons.io.FileExistsException;
 
 /**
  * @author Bernd Vogt <bernd.vogt@sourcepit.org>
@@ -114,4 +117,132 @@ public final class FileUtils
       }
    }
 
+   public static void deleteFileOrDirectory(File file) throws IOException
+   {
+      if (!file.exists())
+      {
+         throw new FileNotFoundException("File does not exist: " + file);
+      }
+      deleteFileOrDirectory0(file);
+   }
+
+   private static void deleteFileOrDirectory0(File file) throws IOException
+   {
+      if (file.isDirectory() && !org.apache.commons.io.FileUtils.isSymlink(file))
+      {
+         cleanDirectory0(file);
+      }
+      if (!file.delete() && file.exists())
+      {
+         final int attempts = 48;
+         final long idleTime = 125L;
+         for (int i = 0; i < attempts; i++)
+         {
+            try
+            {
+               Thread.sleep(idleTime);
+            }
+            catch (InterruptedException e)
+            {
+            }
+
+            try
+            {
+               deleteFileOrDirectory0(file);
+               return;
+            }
+            catch (IOException e)
+            {
+            }
+         }
+         throw new IOException("Unable to delete: " + file);
+      }
+   }
+
+   private static void cleanDirectory0(File file) throws IOException
+   {
+      final File[] files = file.listFiles();
+      if (files == null)
+      { // null if security restricted or file deleted concurrently
+         throw new IOException("Failed to list contents of " + file);
+      }
+
+      IOException exception = null;
+      for (File f : files)
+      {
+         try
+         {
+            deleteFileOrDirectory0(f);
+         }
+         catch (IOException ioe)
+         {
+            exception = ioe;
+         }
+      }
+
+      if (null != exception)
+      {
+         throw exception;
+      }
+   }
+
+   public static void moveDirectory(File srcDir, File destDir) throws IOException
+   {
+      if (!srcDir.exists())
+      {
+         throw new FileNotFoundException("Source '" + srcDir + "' does not exist");
+      }
+      if (!srcDir.isDirectory())
+      {
+         throw new IOException("Source '" + srcDir + "' is not a directory");
+      }
+      if (destDir.exists())
+      {
+         throw new FileExistsException("Destination '" + destDir + "' already exists");
+      }
+      final boolean rename = srcDir.renameTo(destDir);
+      if (!rename)
+      {
+         if (destDir.getCanonicalPath().startsWith(srcDir.getCanonicalPath()))
+         {
+            throw new IOException("Cannot move directory: " + srcDir + " to a subdirectory of itself: " + destDir);
+         }
+         org.apache.commons.io.FileUtils.copyDirectory(srcDir, destDir);
+         deleteFileOrDirectory(srcDir);
+      }
+   }
+
+   public static void moveFile(File srcFile, File destFile) throws IOException
+   {
+      if (!srcFile.exists())
+      {
+         throw new FileNotFoundException("Source '" + srcFile + "' does not exist");
+      }
+      if (srcFile.isDirectory())
+      {
+         throw new IOException("Source '" + srcFile + "' is a directory");
+      }
+      if (destFile.exists())
+      {
+         throw new FileExistsException("Destination '" + destFile + "' already exists");
+      }
+      if (destFile.isDirectory())
+      {
+         throw new IOException("Destination '" + destFile + "' is a directory");
+      }
+      final boolean rename = srcFile.renameTo(destFile);
+      if (!rename)
+      {
+         org.apache.commons.io.FileUtils.copyFile(srcFile, destFile);
+         try
+         {
+            deleteFileOrDirectory(srcFile);
+         }
+         catch (IOException e)
+         {
+            org.apache.commons.io.FileUtils.deleteQuietly(destFile);
+            throw new IOException("Failed to delete original file '" + srcFile + "' after copy to '" + destFile + "'");
+         }
+      }
+   }
 }
