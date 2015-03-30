@@ -16,7 +16,7 @@
 
 package org.sourcepit.common.utils.priority;
 
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 import static org.sourcepit.common.utils.priority.Priority.HIGH;
 import static org.sourcepit.common.utils.priority.Priority.LOW;
 import static org.sourcepit.common.utils.priority.Priority.MAXIMUM;
@@ -47,6 +47,12 @@ public class PrioritizedTest
       public Priority getPriority()
       {
          return priority;
+      }
+      
+      @Override
+      public String toString()
+      {
+         return priority==null ? "null" : priority.toString();
       }
    }
 
@@ -84,6 +90,18 @@ public class PrioritizedTest
       Collections.sort(priorized);
 
       assertThat(priorized, IsEqual.equalTo(ref));
+   }
+
+   @Test
+   public void testNull() throws Exception
+   {
+      Priorized normal = new PriorizedImpl(NORMAL);
+      Priorized nill = new PriorizedImpl(null);
+      
+      
+      assertTrue(normal.compareTo(nill) < 0);
+      
+      assertTrue(nill.compareTo(normal) > 0);
    }
 
 }

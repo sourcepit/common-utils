@@ -28,6 +28,10 @@ public abstract class AbstractPriorized implements Priorized
       {
          return prio2 == null ? 0 : prio2.ordinal() + 1;
       }
+      if (prio2 == null)
+      {
+         return prio1 == null ? 0 : -1 * (prio1.ordinal() + 1);
+      }
       return prio1.compareTo(prio2);
    }
 }
