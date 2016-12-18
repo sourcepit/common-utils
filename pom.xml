@@ -24,9 +24,9 @@
 	<groupId>org.sourcepit.common</groupId>
 	<artifactId>org.sourcepit.common.utils</artifactId>
 	<version>0.17.0-SNAPSHOT</version>
-	
+
 	<name>Sourcepit Common Utilities Library</name>
-	
+
 	<description>Provides utilities for common problems.</description>
 
 	<scm>
@@ -56,8 +56,8 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>srcpit.osgified</groupId>
-			<artifactId>org.codehaus.plexus.interpolation</artifactId>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-interpolation</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<!-- Testing -->
